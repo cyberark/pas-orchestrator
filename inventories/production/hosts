@@ -1,0 +1,25 @@
+# file: production
+# TODO: Add description how to add hosts
+
+[pvwa]
+# Add here list of hosts or ip adresses of pvwa dedicated machines
+# pvwa01.example.com
+# pvwa02.example.com
+
+
+[cpm]
+# Add here list of hosts or ip adresses of cpm dedicated machines
+# cpm01.example.com
+# cpm02.example.com
+
+
+[psm]
+# Add here list of hosts or ip adresses of psm dedicated machines
+# psm01.example.com
+# psm02.example.com
+
+
+[psmp]
+# Add here list of hosts or ip adresses of psmp dedicated machines
+# psmp01.example.com
+# psmp02.example.com
