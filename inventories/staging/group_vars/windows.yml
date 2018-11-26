@@ -1,0 +1,11 @@
+---
+# file: group_vars/all
+any_errors_fatal: true
+ansible_python_interpreter: python
+ansible_winrm_server_cert_validation: ignore
+ansible_connection: winrm
+ansible_winrm_transport: basic
+ansible_port: 5986
+ansible_become_password: "{{ ansible_password }}"
+ansible_winrm_read_timeout_sec: 800
+ansible_winrm_operation_timeout_sec: 600

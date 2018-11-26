@@ -1,0 +1,5 @@
+---
+# file: pas.yml
+- import_playbook: pvwa.yml
+- import_playbook: cpm.yml
+- import_playbook: psm.yml
