@@ -1,0 +1,17 @@
+---
+# tasks file for register_components
+- hosts: localhost
+  connection: local
+  tasks:
+  - name: Register pvwa
+    include_role: 
+      name: cpm
+    vars:
+      cpm_prerequisites: false
+      cpm_install: false
+      cpm_postinstall: false
+      cpm_hardening: false
+      cpm_registration: true
+    delegate_to: "{{ item }}"
+    with_inventory_hostnames:
+      - cpm
