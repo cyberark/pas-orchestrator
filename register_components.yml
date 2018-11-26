@@ -1,7 +1,7 @@
 ---
 # tasks file for register_components
-- hosts: localhost
-  connection: local
+- hosts: pvwa
+  serial: 1
   tasks:
   - name: Register pvwa
     include_role: 
@@ -11,7 +11,31 @@
       cpm_install: false
       cpm_postinstall: false
       cpm_hardening: false
-      cpm_registration: true
-    delegate_to: "{{ item }}"
-    with_inventory_hostnames:
-      - cpm
+      cpm_registration: false
+      
+- hosts: cpm
+  serial: 1
+  tasks:
+  - name: Register cpm
+    include_role: 
+      name: cpm
+    vars:
+      cpm_prerequisites: false
+      cpm_install: false
+      cpm_postinstall: false
+      cpm_hardening: false
+      cpm_registration: false
+
+- hosts: psm
+  serial: 1
+  tasks:
+  - name: Register psm
+    include_role: 
+      name: cpm
+    vars:
+      cpm_prerequisites: false
+      cpm_install: false
+      cpm_postinstall: false
+      cpm_hardening: false
+      cpm_registration: false
+    
