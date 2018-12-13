@@ -1,41 +1,35 @@
 ---
 # tasks file for register_components
-- hosts: pvwa
+- hosts: "{{ hostvars['localhost']['components_registration_order'][0] }}"
   serial: 1
   tasks:
-  - name: Register pvwa
+  - name: Register "{{ hostvars['localhost']['components_registration_order'][0] }}"
     include_role: 
-      name: cpm
+      name: "{{ hostvars['localhost']['components_registration_order'][0] }}"
     vars:
-      cpm_prerequisites: false
-      cpm_install: false
-      cpm_postinstall: false
-      cpm_hardening: false
-      cpm_registration: false
+      pvwa_registration: true
+      cpm_registration: true
+      psm_registration: true
       
-- hosts: cpm
+- hosts: "{{ hostvars['localhost']['components_registration_order'][1] }}"
   serial: 1
   tasks:
-  - name: Register cpm
+  - name: Register "{{ hostvars['localhost']['components_registration_order'][1] }}"
     include_role: 
-      name: cpm
+      name: "{{ hostvars['localhost']['components_registration_order'][1] }}"
     vars:
-      cpm_prerequisites: false
-      cpm_install: false
-      cpm_postinstall: false
-      cpm_hardening: false
-      cpm_registration: false
-
-- hosts: psm
+      pvwa_registration: true
+      cpm_registration: true
+      psm_registration: true
+      
+- hosts: "{{ hostvars['localhost']['components_registration_order'][2] }}"
   serial: 1
   tasks:
-  - name: Register psm
+  - name: Register "{{ hostvars['localhost']['components_registration_order'][2] }}"
     include_role: 
-      name: cpm
+      name: "{{ hostvars['localhost']['components_registration_order'][2] }}"
     vars:
-      cpm_prerequisites: false
-      cpm_install: false
-      cpm_postinstall: false
-      cpm_hardening: false
-      cpm_registration: false
-    
+      pvwa_registration: true
+      cpm_registration: true
+      psm_registration: true
+  

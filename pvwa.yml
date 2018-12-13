@@ -1,12 +1,14 @@
 ---
 # file: pvwa.yml
 - hosts: pvwa
-- name: Deploy cpm
-    include_role: 
-      name: cpm
-    vars:
-      cpm_prerequisites: true
-      cpm_install: true
-      cpm_postinstall: true
-      cpm_hardening: true
-      cpm_registration: false
+  
+  tasks: 
+  
+    - include_role: 
+        name: cpm
+      vars:
+        cpm_prerequisites: true
+        cpm_install: true
+        cpm_postinstall: true
+        cpm_hardening: true
+        cpm_registration: false

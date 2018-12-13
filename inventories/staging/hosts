@@ -12,10 +12,10 @@
 # Add here list of hosts or ip adresses of cpm dedicated machines
 # cpm01.example.com
 # cpm02.example.com
-10.2.0.145
-10.2.0.146
-10.2.0.147
-10.2.0.148
+10.2.0.31
+10.2.0.94
+10.2.0.103
+10.2.0.219
 
 
 [psm]
