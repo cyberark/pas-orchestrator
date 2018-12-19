@@ -1,0 +1,35 @@
+---
+# tasks file for register_components
+- hosts: "{{ hostvars['localhost']['components_registration_order'][0] }}"
+  serial: 1
+  tasks:
+  - name: Register "{{ hostvars['localhost']['components_registration_order'][0] }}"
+    include_role: 
+      name: "{{ hostvars['localhost']['components_registration_order'][0] }}"
+    vars:
+      pvwa_registration: true
+      cpm_registration: true
+      psm_registration: true
+      
+- hosts: "{{ hostvars['localhost']['components_registration_order'][1] }}"
+  serial: 1
+  tasks:
+  - name: Register "{{ hostvars['localhost']['components_registration_order'][1] }}"
+    include_role: 
+      name: "{{ hostvars['localhost']['components_registration_order'][1] }}"
+    vars:
+      pvwa_registration: true
+      cpm_registration: true
+      psm_registration: true
+      
+- hosts: "{{ hostvars['localhost']['components_registration_order'][2] }}"
+  serial: 1
+  tasks:
+  - name: Register "{{ hostvars['localhost']['components_registration_order'][2] }}"
+    include_role: 
+      name: "{{ hostvars['localhost']['components_registration_order'][2] }}"
+    vars:
+      pvwa_registration: true
+      cpm_registration: true
+      psm_registration: true
+  

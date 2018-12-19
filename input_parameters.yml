@@ -1,0 +1,53 @@
+---
+# file: import_parameters.yml
+- hosts: localhost
+  connection: local
+  
+  vars_prompt:
+    - name: version
+      prompt: "Please enter the PAS version"
+      private: no
+      
+    - name: vault_ip
+      prompt: "Please enter the Vault ip address"
+      private: no
+    
+    - name: vault_password
+      prompt: "Please enter the Vault Administrator password"
+      private: yes
+      
+    - name: ansible_user
+      prompt: "Please enter the Hosts Administrator username"
+      private: no
+      
+    - name: ansible_password
+      prompt: "Please enter the Hosts Administrator password"
+      private: yes
+      
+    - name: cpm_zip_file_path
+      prompt: "Please enter cpm package location (etc. /tmp/pas_packages/cpm.zip)"
+      private: no
+      
+    - name: pvwa_zip_file_path
+      prompt: "Please enter pvwa package location (etc. /tmp/pas_packages/pvwa.zip)"
+      private: no
+      
+    - name: psm_zip_file_path
+      prompt: "Please enter psm package location (etc. /tmp/pas_packages/psm.zip)"
+      private: no
+  
+  tasks:
+  
+    - set_fact:
+        components_registration_order: 
+          - cpm
+          - pvwa
+          - psm
+      when: version == "v10.6"
+      
+    - set_fact:
+        components_registration_order: 
+          - pvwa
+          - cpm
+          - psm
+      when: version != "v10.6"

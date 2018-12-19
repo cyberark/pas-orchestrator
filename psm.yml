@@ -1,0 +1,14 @@
+---
+# file: psm.yml
+- hosts: psm
+  
+  tasks: 
+  
+    - include_role: 
+        name: cpm
+      vars:
+        cpm_prerequisites: true
+        cpm_install: true
+        cpm_postinstall: true
+        cpm_hardening: true
+        cpm_registration: false

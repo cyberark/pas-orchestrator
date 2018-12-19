@@ -1,0 +1,8 @@
+# ignore all retries files
+*.retry
+
+# ignore components symlink
+roles/cpm
+roles/psm
+roles/pvwa
+roles/psmp
