@@ -1,14 +1,18 @@
 ---
 # file: pvwa.yml
-- hosts: pvwa
+# - hosts: pvwa
   
-  tasks: 
+  
+#   tasks: 
   
     - include_role: 
-        name: cpm
+        name: pvwa
       vars:
-        cpm_prerequisites: true
-        cpm_install: true
-        cpm_postinstall: true
-        cpm_hardening: true
-        cpm_registration: false
+        - pvwa_extract: true
+        - pvwa_prerequisites: true
+        - pvwa_install: true
+        - pvwa_postinstall: true
+        - pvwa_hardening: true
+        - pvwa_registration: false
+        - ansible_password: "{{ ansible_password }}"
+        - accept_eula: "Yes"
