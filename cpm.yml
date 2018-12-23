@@ -1,8 +1,4 @@
 ---
-# file: cpm.yml
-# - hosts: cpm
-  
-#   tasks: 
   
 - include_role: 
     name: cpm

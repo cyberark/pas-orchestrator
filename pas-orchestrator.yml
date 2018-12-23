@@ -3,12 +3,6 @@
 - hosts: all
   strategy: free
   
-  # vars:
-  #   ansible_become: yes
-  #   ansible_become_method: runas
-  #   ansible_become_user: "{{ ansible_user }}"
-  #   ansible_become_flags: logon_type=new_credentials logon_flags=netcredentials_only
-
   vars_prompt:
     - name: version
       prompt: "Please enter the PAS version"
@@ -44,24 +38,20 @@
 
   tasks:
   
-    - set_fact:
-        components_registration_order: 
-          # - cpm
-          - pvwa
-          # - psm
-      when: version == "v10.6"
-      
-    - set_fact:
-        components_registration_order: 
-          - pvwa
-          - cpm
-          - psm
-      when: version != "v10.6"
-    
-    - include: pvwa.yml
-      when: "'pvwa' in group_names"
     - include: cpm.yml
       when: "'cpm' in group_names"
+    - include: pvwa.yml
+      when: "'pvwa' in group_names"      
     - include: psm.yml
       when: "'psm' in group_names"
-    # - import_playbook: register_components.yml
+    
+
+
+# - hosts: all
+#   gather_facts: false
+  
+#   tasks:
+  
+#     - include: register_components.yml
+#       vars:
+#         - pvwa_ip: "{{ groups['pvwa'][0] }}"

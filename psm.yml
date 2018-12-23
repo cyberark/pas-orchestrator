@@ -1,14 +1,5 @@
 ---
-# file: psm.yml
-# - hosts: psm
-#   vars:
-#     ansible_become: yes
-#     ansible_become_method: runas
-#     ansible_become_user: "{{ ansible_user }}"
-#     ansible_become_flags: logon_type=new_credentials logon_flags=netcredentials_only
-    
-#   tasks: 
-  
+
 - include_role: 
     name: psm
   vars:
