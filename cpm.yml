@@ -9,6 +9,4 @@
     - cpm_postinstall: true
     - cpm_hardening: true
     - cpm_registration: true
-    - accept_eula: "Yes"
     - ansible_password: "{{ ansible_password }}"
-    - vault_username: "administrator"
