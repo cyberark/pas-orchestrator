@@ -7,7 +7,15 @@
     include_role: 
       name: cpm
     vars:
-      cpm_registration: true
+      - cpm_extract: false
+      - cpm_prerequisites: false
+      - cpm_install: false
+      - cpm_postinstall: false
+      - cpm_hardening: false
+      - accept_eula: "Yes"
+      - ansible_password: "{{ ansible_password }}"
+      - vault_username: "administrator"
+      - cpm_registration: true
       
 - hosts: pvwa
   serial: 1
@@ -16,7 +24,14 @@
     include_role: 
       name: pvwa
     vars:
-      pvwa_registration: true
+      - pvwa_extract: false
+      - pvwa_prerequisites: false
+      - pvwa_install: false
+      - pvwa_postinstall: false
+      - pvwa_hardening: false
+      - ansible_password: "{{ ansible_password }}"
+      - accept_eula: "Yes"
+      - pvwa_registration: true
       
 - hosts: psm
   serial: 1
@@ -25,5 +40,15 @@
     include_role: 
       name: psm
     vars:
-      psm_registration: true
+      - psm_extract: false
+      - psm_prerequisites: false
+      - psm_install: false
+      - psm_postinstall: false
+      - psm_hardening: false
+      - accept_eula: "Yes"
+      - ansible_password: "{{ ansible_password }}"
+      - vault_username: "administrator"
+      - psm_disable_nla: "Yes"
+      - psm_out_of_domain: false
+      - psm_registration: true
   

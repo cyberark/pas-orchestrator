@@ -1,6 +1,6 @@
 ---
 # file: group_vars/all
-any_errors_fatal: true
+any_errors_fatal: false
 ansible_python_interpreter: python
 ansible_winrm_server_cert_validation: ignore
 ansible_connection: winrm

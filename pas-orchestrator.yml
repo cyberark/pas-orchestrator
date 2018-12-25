@@ -4,8 +4,8 @@
   strategy: free
   
   vars_prompt:
-    - name: version
-      prompt: "Please enter the PAS version"
+    - name: accept_eula
+      prompt: "Please accept EULA"
       private: no
       
     - name: vault_ip
@@ -47,11 +47,7 @@
     
 
 
-# - hosts: all
-#   gather_facts: false
+- import_playbook: register_components.yml    
+  vars: 
+    pvwa_ip: "{{ groups['pvwa'][0] }}"
   
-#   tasks:
-  
-#     - include: register_components.yml
-#       vars:
-#         - pvwa_ip: "{{ groups['pvwa'][0] }}"

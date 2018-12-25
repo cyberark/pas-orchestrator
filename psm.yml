@@ -13,4 +13,3 @@
     - accept_eula: "Yes"
     - psm_disable_nla: "Yes"
     - psm_out_of_domain: true
-    - pvwa_ip: 5.5.5.5
