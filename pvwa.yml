@@ -1,6 +1,6 @@
 ---
-  
-- include_role: 
+
+- include_role:
     name: pvwa
   vars:
     - pvwa_extract: true
@@ -10,4 +10,4 @@
     - pvwa_hardening: true
     - pvwa_registration: false
     - ansible_password: "{{ ansible_password }}"
-    - accept_eula: "Yes"
+

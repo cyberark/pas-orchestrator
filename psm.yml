@@ -1,6 +1,6 @@
 ---
 
-- include_role: 
+- include_role:
     name: psm
   vars:
     - psm_extract: true
@@ -10,6 +10,4 @@
     - psm_hardening: true
     - psm_registration: false
     - ansible_password: "{{ ansible_password }}"
-    - accept_eula: "Yes"
-    - psm_disable_nla: "Yes"
-    - psm_out_of_domain: true
+
