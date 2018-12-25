@@ -1,14 +1,12 @@
 ---
-# file: psm.yml
-- hosts: psm
-  
-  tasks: 
-  
-    - include_role: 
-        name: cpm
-      vars:
-        cpm_prerequisites: true
-        cpm_install: true
-        cpm_postinstall: true
-        cpm_hardening: true
-        cpm_registration: false
+
+- include_role: 
+    name: psm
+  vars:
+    - psm_extract: true
+    - psm_prerequisites: true
+    - psm_install: true
+    - psm_postinstall: true
+    - psm_hardening: true
+    - psm_registration: false
+    - ansible_password: "{{ ansible_password }}"

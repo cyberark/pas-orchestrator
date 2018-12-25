@@ -1,14 +1,12 @@
 ---
-# file: cpm.yml
-- hosts: cpm
   
-  tasks: 
-  
-    - include_role: 
-        name: cpm
-      vars:
-        cpm_prerequisites: true
-        cpm_install: true
-        cpm_postinstall: true
-        cpm_hardening: true
-        cpm_registration: false
+- include_role: 
+    name: cpm
+  vars:
+    - cpm_extract: true
+    - cpm_prerequisites: true
+    - cpm_install: true
+    - cpm_postinstall: true
+    - cpm_hardening: true
+    - cpm_registration: true
+    - ansible_password: "{{ ansible_password }}"
