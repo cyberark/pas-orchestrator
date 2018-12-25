@@ -10,6 +10,3 @@
     - psm_hardening: true
     - psm_registration: false
     - ansible_password: "{{ ansible_password }}"
-    - accept_eula: "Yes"
-    - psm_disable_nla: "Yes"
-    - psm_out_of_domain: true
