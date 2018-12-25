@@ -45,7 +45,7 @@
     - include: psm.yml
       when: "'psm' in group_names"
     
-
+# PSM Register Component Requires the First PVWA IP Address
 
 - import_playbook: register_components.yml    
   vars: 
