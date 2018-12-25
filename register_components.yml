@@ -8,13 +8,9 @@
       name: cpm
     vars:
       - cpm_extract: false
-      - cpm_prerequisites: false
       - cpm_install: false
-      - cpm_postinstall: false
       - cpm_hardening: false
-      - accept_eula: "Yes"
       - ansible_password: "{{ ansible_password }}"
-      - vault_username: "administrator"
       - cpm_registration: true
       
 - hosts: pvwa
@@ -27,10 +23,8 @@
       - pvwa_extract: false
       - pvwa_prerequisites: false
       - pvwa_install: false
-      - pvwa_postinstall: false
       - pvwa_hardening: false
       - ansible_password: "{{ ansible_password }}"
-      - accept_eula: "Yes"
       - pvwa_registration: true
       
 - hosts: psm
@@ -45,10 +39,6 @@
       - psm_install: false
       - psm_postinstall: false
       - psm_hardening: false
-      - accept_eula: "Yes"
       - ansible_password: "{{ ansible_password }}"
-      - vault_username: "administrator"
-      - psm_disable_nla: "Yes"
-      - psm_out_of_domain: false
       - psm_registration: true
   
