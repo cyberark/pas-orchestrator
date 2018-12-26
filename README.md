@@ -15,7 +15,7 @@ Requirements
 
 ## Role Variables
 
-A list of vaiables the playbook is using
+A list of variables used in this playbook
 
 **Deployment Variables**
 
@@ -37,9 +37,9 @@ Variables related to the components can be found on the Components README
 
 ## Usage
 
-The Role consists of two parts, each part is running seperatly:
+The Role consists of two parts, each part runs independently:
 
-**Components Deployment**
+**Part 1 - Components Deployment**
 
 The task will trigger the components main roles, each role will trigger it's sub tasks (prerequisities/installation, etc.)
 by default, all tasks are set to true except registration.
@@ -47,14 +47,14 @@ This process runs all tasks on all hosts parallely, causing reduction in deploym
 
 *IMPORTANT: Component Registration should be always set to false in this phase
 
-**Components Registration**
+**Part 2 - Components Registration**
 
-This task will run registration process of the components, all the previous tasks are set to false and only registration is enabled
-This process runs each registration in serial, one registration at a time
+This task will executes registration process of the components, all the previous tasks are set to false and only registration is enabled
+This process execute the each registration in serial, one registration at a time
 
 ## Inventory
 
-Inventory is consists with group for each component:
+Inventory consists of a group of variables:
 
     ---
     windows:
@@ -78,7 +78,7 @@ Inventory is consists with group for each component:
 
 ## Running the  playbook:
 
-To run the above playbook:
+To run the above playbook execute the following command:
 
     ansible-playbook -i ./inventories/hosts.yml pas-orchestrator.yml -e "vault_ip=VAULT_IP vault_password=VAULT_PASSWROD ansible_user=DOMAIN\USER ansible_password=DOAMIN_PASSWORD cpm_zip_file_path=/tmp/pas_packages/cpm.zip pvwa_zip_file_path=/tmp/pas_packages/pvwa.zip psm_zip_file_path=/tmp/pas_packages/psm.zip psm_out_of_domain=false accept_eula=yES"
 
