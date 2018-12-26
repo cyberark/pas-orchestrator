@@ -1,6 +1,6 @@
 ---
-  
-- include_role: 
+
+- include_role:
     name: cpm
   vars:
     - cpm_extract: true

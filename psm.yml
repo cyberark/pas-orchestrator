@@ -1,6 +1,6 @@
 ---
 
-- include_role: 
+- include_role:
     name: psm
   vars:
     - psm_extract: true
@@ -10,3 +10,4 @@
     - psm_hardening: true
     - psm_registration: false
     - ansible_password: "{{ ansible_password }}"
+

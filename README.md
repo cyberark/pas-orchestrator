@@ -1,38 +1,86 @@
-Role Name
-=========
+# pas-orchestrator
 
-A brief description of the role goes here.
+This Playbook will orchestrate the CyberArk cpm/pvwa/psm products on a Windows 2016 server / VM / instance
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+- Windows 2016 must be installed on the servers
+- Administrator credentials (either Local or Domain)
+- Network connection to the vault and the repository server
+- PAS packages version 10.6 and above, including the location of the CD images
+- IP addresses / hosts to execute the playbook against
 
-Role Variables
---------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+## Role Variables
 
-Dependencies
-------------
+These are the variables used in this playbook
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+**Deployment Variables**
 
-Example Playbook
-----------------
+| Variable                         | Required     | Default                                                                        | Comments                                 |
+|----------------------------------|--------------|--------------------------------------------------------------------------------|------------------------------------------|
+| vault_ip                         | yes          | None                                                                           | Vault ip to perform registration         |
+| dr_vault_ip                      | no           | None                                                                           | vault dr ip to perform registration      |
+| vault_port                       | no           | 1858                                                                           | vault port                               |
+| vault_username                   | no           | "administrator"                                                                | vault username to perform registration   |
+| vault_password                   | yes          | None                                                                           | vault password to perform registration   |
+| accept_eula                      | yes          | "No"                                                                           | Accepting EULA condition                 |
+| psm_disable_nla                  | yes          | "No"                                                                           | This will disable NLA on the server      |
+| cpm_zip_file_path                | yes          | None                                                                           | Path to zipped CPM image                 |
+| pvwa_zip_file_path               | yes          | None                                                                           | Path to zipped PVWA image                |
+| psm_zip_file_path                | yes          | None                                                                           | Path to zipped PSM image                 |
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+Variables related to the components can be found on the Components README
 
-License
--------
+## Usage
 
-BSD
+The Role consists of two parts, each part runs independently:
 
-Author Information
-------------------
+**Part 1 - Components Deployment**
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+The task will trigger the components main roles, each role will trigger it's sub tasks (prerequisities/installation, etc.)
+by default, all tasks are set to true except registration.
+This process executes tasks on all hosts in parallel, reducing deployment time
+
+*IMPORTANT: Component Registration should be always set to false in this phase
+
+**Part 2 - Components Registration**
+
+This task will execute the registration process of the components, all the previous tasks are set to false and only registration is enabled
+This process executes the registration of each component in serial
+
+## Inventory
+
+Inventory consists of a group of variables:
+
+    ---
+    windows:
+      children:
+        pvwa:
+          hosts:
+            1.2.3.4;
+            1.2.3.14:
+            1.2.3.24:
+        cpm:
+          hosts:
+            2.2.2.2;
+            2.2.2.22;
+            2.2.2.222;
+        psm:
+          hosts:
+            9.8.7.6;
+            5.4.3.2;
+            9.1.7.3;
+
+
+## Running the  playbook:
+
+To run the above playbook execute the following command:
+
+    ansible-playbook -i ./inventories/hosts.yml pas-orchestrator.yml -e "vault_ip=VAULT_IP vault_password=VAULT_PASSWROD ansible_user=DOMAIN\USER ansible_password=DOAMIN_PASSWORD cpm_zip_file_path=/tmp/pas_packages/cpm.zip pvwa_zip_file_path=/tmp/pas_packages/pvwa.zip psm_zip_file_path=/tmp/pas_packages/psm.zip psm_out_of_domain=false accept_eula=yES"
+
+## License
+
+Apache 2
