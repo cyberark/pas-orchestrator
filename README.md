@@ -8,14 +8,13 @@ Requirements
 - Windows 2016 must be installed on the servers
 - Administrator credentials (either Local or Domain)
 - Network connection to the vault and the repository server
-- Location of psm CD image
-- PAS packages version 10.6 and above
-- IP addresses / hosts to orchestrate the products to
+- PAS packages version 10.6 and above, including the location of the CD images
+- IP addresses / hosts to execute the playbook against
 
 
 ## Role Variables
 
-A list of variables used in this playbook
+These are the variables used in this playbook
 
 **Deployment Variables**
 
@@ -43,14 +42,14 @@ The Role consists of two parts, each part runs independently:
 
 The task will trigger the components main roles, each role will trigger it's sub tasks (prerequisities/installation, etc.)
 by default, all tasks are set to true except registration.
-This process runs all tasks on all hosts parallely, causing reduction in deployment time
+This process executes tasks on all hosts in parallel, reducing deployment time
 
 *IMPORTANT: Component Registration should be always set to false in this phase
 
 **Part 2 - Components Registration**
 
-This task will executes registration process of the components, all the previous tasks are set to false and only registration is enabled
-This process execute the each registration in serial, one registration at a time
+This task will execute the registration process of the components, all the previous tasks are set to false and only registration is enabled
+This process executes the registration of each component in serial
 
 ## Inventory
 
