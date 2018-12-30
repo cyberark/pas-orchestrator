@@ -79,7 +79,7 @@ Inventory consists of a group of variables:
 
 To run the above playbook execute the following command:
 
-    ansible-playbook -i ./inventories/hosts.yml pas-orchestrator.yml -e "vault_ip=VAULT_IP vault_password=VAULT_PASSWROD ansible_user=DOMAIN\USER ansible_password=DOAMIN_PASSWORD cpm_zip_file_path=/tmp/pas_packages/cpm.zip pvwa_zip_file_path=/tmp/pas_packages/pvwa.zip psm_zip_file_path=/tmp/pas_packages/psm.zip psm_out_of_domain=false accept_eula=yES"
+    ansible-playbook -i ./inventories/hosts.yml pas-orchestrator.yml -e "vault_ip=VAULT_IP vault_password=VAULT_PASSWROD ansible_user=DOMAIN\USER ansible_password=DOMAIN_PASSWORD cpm_zip_file_path=/tmp/pas_packages/cpm.zip pvwa_zip_file_path=/tmp/pas_packages/pvwa.zip psm_zip_file_path=/tmp/pas_packages/psm.zip psm_out_of_domain=false accept_eula=Yes"
 
 ## License
 

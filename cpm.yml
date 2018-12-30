@@ -9,4 +9,4 @@
     - cpm_postinstall: true
     - cpm_hardening: true
     - cpm_registration: false
-    - ansible_password: "{{ ansible_password }}"
+

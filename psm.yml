@@ -9,5 +9,3 @@
     - psm_postinstall: true
     - psm_hardening: true
     - psm_registration: false
-    - ansible_password: "{{ ansible_password }}"
-
