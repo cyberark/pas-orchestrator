@@ -1,0 +1,7 @@
+---
+
+- name: Register cpm
+  include_role:
+    name: cpm
+  vars:
+    - cpm_registration: true
