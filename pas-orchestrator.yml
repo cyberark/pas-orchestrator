@@ -50,4 +50,3 @@
 - import_playbook: register_components.yml
   vars:
     pvwa_ip: "{{ groups['pvwa'][0] }}"
-
