@@ -25,7 +25,7 @@ pipeline {
     stage('yamllint validation') {
       steps {
         script {
-          sh(script: "testenv/bin/yamllint pas-orchestrator.yml", returnStdout: true)
+          sh(script: "testenv/bin/yamllint .", returnStdout: true)
         }
       }
     }
