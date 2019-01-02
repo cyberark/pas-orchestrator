@@ -52,7 +52,7 @@ These are the variables used in this playbook
 | vault_username                   | no           | "administrator"                                                                | vault username to perform registration   |
 | vault_password                   | yes          | None                                                                           | vault password to perform registration   |
 | accept_eula                      | yes          | "No"                                                                           | Accepting EULA condition                 |
-| psm_disable_nla                  | yes          | "No"                                                                           | This will disable NLA on the server      |
+| connect_with_rdp                  | yes          | "No"                                                                           | This will disable NLA on the server      |
 | cpm_zip_file_path                | yes          | None                                                                           | Path to zipped CPM image                 |
 | pvwa_zip_file_path               | yes          | None                                                                           | Path to zipped PVWA image                |
 | psm_zip_file_path                | yes          | None                                                                           | Path to zipped PSM image                 |
