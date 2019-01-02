@@ -1,24 +1,24 @@
 # pas-orchestrator
 
-In today’s modern infrastructure, organizations are moving towards hybrid environments, which consist of multiple public clouds, private clouds and on-premise platforms. 
+- In today’s modern infrastructure, organizations are moving towards hybrid environments, which consist of multiple public clouds, private clouds and on-premise platforms. 
 
-CyberArk has created a tailored installation and deployment method for each platform to enable easy implementation. For example, CloudFormation templates enable easy deployment on AWS, while Azure Resource Manager (ARM) templates enable easy deployment on Azure. However, it is difficult to combine the different methods to orchestrate and automate a hybrid deployment.
+- CyberArk has created a tailored installation and deployment method for each platform to enable easy implementation. For example, CloudFormation templates enable easy deployment on AWS, while Azure Resource Manager (ARM) templates enable easy deployment on Azure. However, it is difficult to combine the different methods to orchestrate and automate a hybrid deployment.
 
-PAS Orchestrator is a set of Ansible Roles which provides a holistic solution to deploying CyberArk Core PAS components simultaneously in multiple environments, regardless of the environment’s location. 
+- PAS Orchestrator is a set of Ansible Roles which provides a holistic solution to deploying CyberArk Core PAS components simultaneously in multiple environments, regardless of the environment’s location. 
 
-The Ansible Roles are responsible for the entire deployment process, and can be integrated with the organization’s CI/CD pipeline.
+- The Ansible Roles are responsible for the entire deployment process, and can be integrated with the organization’s CI/CD pipeline.
 
-Each PAS component’s Ansible Role is responsible for the component end-2-end deployment, which inclues the following stages for each component:
-•	Copy the installation package to the target server
-•	Installing prerequisites
-•	Installing the component silently
-•	Post installation procedure and hardening
-•	Registration in the Vault
+- Each PAS component’s Ansible Role is responsible for the component end-2-end deployment, which inclues the following stages for each component:
+- •	Copy the installation package to the target server
+- •	Installing prerequisites
+- •	Installing the component silently
+- •	Post installation procedure and hardening
+- •	Registration in the Vault
 
-This release introduces Ansible Roles for PVWA, CPM and PSM. The Roles are released as open source and can be found in the following links:
-•	PSM: https://github.com/cyberark/psm
-•	CPM: https://github.com/cyberark/cpm
-•	PVWA: https://github.com/cyberark/pvwa
+- This release introduces Ansible Roles for PVWA, CPM and PSM. The Roles are released as open source and can be found in the following links:
+- •	PSM: https://github.com/cyberark/psm
+- •	CPM: https://github.com/cyberark/cpm
+- •	PVWA: https://github.com/cyberark/pvwa
 
 
 
