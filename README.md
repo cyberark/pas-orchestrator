@@ -15,12 +15,13 @@ Each PAS component’s Ansible Role is responsible for the component end-2-end d
 - Post installation procedure and hardening
 - Registration in the Vault
 
-This release introduces Ansible Roles for PVWA, CPM and PSM. The Roles are released as open source and can be found in the following links:
+Ansible Roles for PVWA, CPM and PSM can be found in the following links:
 - PSM: https://github.com/cyberark/psm
 - CPM: https://github.com/cyberark/cpm
 - PVWA: https://github.com/cyberark/pvwa
 
-
+The PAS Orchestrator role is an example of how to use the component roles 
+demonstrating paralel installation on multiple remote servers 
 
 Requirements
 ------------
@@ -106,6 +107,10 @@ Inventory consists of a group of variables:
 To run the above playbook execute the following command:
 
     ansible-playbook -i ./inventories/hosts.yml pas-orchestrator.yml -e "vault_ip=VAULT_IP vault_password=VAULT_PASSWROD ansible_user=DOMAIN\USER ansible_password=DOMAIN_PASSWORD cpm_zip_file_path=/tmp/pas_packages/cpm.zip pvwa_zip_file_path=/tmp/pas_packages/pvwa.zip psm_zip_file_path=/tmp/pas_packages/psm.zip psm_out_of_domain=false accept_eula=Yes"
+    
+
+## Troubleshooting
+In case of a failure a Log folder with be created on the Ansible workstation with the relevant logs copied from the remote host machine. 
 
 ## License
 
