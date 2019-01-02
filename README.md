@@ -1,15 +1,41 @@
 # pas-orchestrator
 
-This Playbook will orchestrate the CyberArk cpm/pvwa/psm products on a Windows 2016 server / VM / instance
+In today’s modern infrastructure, organizations are moving towards hybrid environments, which consist of multiple public clouds, private clouds and on-premise platforms. 
+
+CyberArk has created a tailored installation and deployment method for each platform to enable easy implementation. For example, CloudFormation templates enable easy deployment on AWS, while Azure Resource Manager (ARM) templates enable easy deployment on Azure. However, it is difficult to combine the different methods to orchestrate and automate a hybrid deployment.
+
+PAS Orchestrator is a set of Ansible Roles which provides a holistic solution to deploying CyberArk Core PAS components simultaneously in multiple environments, regardless of the environment’s location. 
+
+The Ansible Roles are responsible for the entire deployment process, and can be integrated with the organization’s CI/CD pipeline.
+
+Each PAS component’s Ansible Role is responsible for the component end-2-end deployment, which inclues the following stages for each component:
+•	Copy the installation package to the target server
+•	Installing prerequisites
+•	Installing the component silently
+•	Post installation procedure and hardening
+•	Registration in the Vault
+
+This release introduces Ansible Roles for PVWA, CPM and PSM. The Roles are released as open source and can be found in the following links:
+•	PSM: https://github.com/cyberark/psm
+•	CPM: https://github.com/cyberark/cpm
+•	PVWA: https://github.com/cyberark/pvwa
+
+
 
 Requirements
 ------------
 
-- Windows 2016 must be installed on the servers
-- Administrator credentials (either Local or Domain)
-- Network connection to the vault and the repository server
-- PAS packages version 10.6 and above, including the location of the CD images
-- IP addresses / hosts to execute the playbook against
+- IP addresses / hosts to execute the playbook against with Windows 2016 installed on the remote hosts
+- WinRM open on port 5986 (**not 5985**) on the remote host 
+- Pywinrm is installed on the workstation running the playbook
+- The workstation running the playbook must have network connectivity to the remote host
+- The remote host must have Network connectivity to the CyberArk vault and the repository server
+  - 443 port outbound
+  - 443 port outbound (for PVWA only)
+  - 1858 port outbound 
+- Administrator access to the remote host 
+- CyberArk components CD image on the workstation running the playbook 
+
 
 
 ## Role Variables
