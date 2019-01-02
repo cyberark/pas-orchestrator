@@ -112,6 +112,11 @@ To run the above playbook execute the following command:
 ## Troubleshooting
 In case of a failure a Log folder with be created on the Ansible workstation with the relevant logs copied from the remote host machine. 
 
+
+## Idempotence
+Every stage in the roles contains validation and can be run multiple time without error .
+
+
 ## License
 
 Apache 2
