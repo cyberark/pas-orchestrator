@@ -8,7 +8,7 @@ PAS Orchestrator is a set of Ansible Roles which provides a holistic solution to
 
  The Ansible roles are responsible for the entire deployment process, and can be integrated with the organization’s CI/CD pipeline.
 
-Each PAS component’s Ansible Role is responsible for the component end-2-end deployment, which inclues the following stages for each component:
+ Each PAS component’s Ansible role is responsible for the component end-2-end deployment, which includes the following stages for each component:
 - Copy the installation package to the target server
 - Installing prerequisites
 - Installing the component silently
