@@ -104,7 +104,7 @@ Inventory consists of a group of variables:
 
 ## Running the  playbook:
 
-To run the above playbook execute the following command example :
+ To run the above playbook, execute the following command example :
 
     ansible-playbook -i ./inventories/hosts.yml pas-orchestrator.yml -e "vault_ip=VAULT_IP ansible_user=DOMAIN\USER cpm_zip_file_path=/tmp/pas_packages/cpm.zip pvwa_zip_file_path=/tmp/pas_packages/pvwa.zip psm_zip_file_path=/tmp/pas_packages/psm.zip psm_out_of_domain=false accept_eula=Yes"
     
