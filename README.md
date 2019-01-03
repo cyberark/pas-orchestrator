@@ -4,7 +4,7 @@
 
 CyberArk has created a tailored installation and deployment method for each platform to enable easy implementation. For example, CloudFormation templates enable easy deployment on AWS, while Azure Resource Manager (ARM) templates enable easy deployment on Azure. However, it is difficult to combine the different methods to orchestrate and automate a hybrid deployment.
 
-PAS Orchestrator is a set of Ansible Roles which provides a holistic solution to deploying CyberArk Core PAS components simultaneously in multiple environments, regardless of the environment’s location. 
+ PAS Orchestrator is a set of Ansible roles which provides a holistic solution to deploying CyberArk Core PAS components simultaneously in multiple environments, regardless of the environment’s location. 
 
  The Ansible roles are responsible for the entire deployment process, and can be integrated with the organization’s CI/CD pipeline.
 
