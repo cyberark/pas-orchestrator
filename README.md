@@ -121,4 +121,4 @@ Every stage in the roles contains validation and can be run multiple time withou
 
 ## License
 
-Apache 2
+Apache License, Version 2.0
