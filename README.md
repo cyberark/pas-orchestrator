@@ -18,7 +18,7 @@ CyberArk has created a tailored installation and deployment method for each plat
 Ansible Roles for PVWA, CPM and PSM can be found in the following links:
  - PSM: [https://github.com/cyberark/psm](https://github.com/cyberark/psm)
  - CPM: [https://github.com/cyberark/psm](https://github.com/cyberark/cpm)
-- PVWA: https://github.com/cyberark/pvwa
+ - PVWA: [https://github.com/cyberark/pvwa](https://github.com/cyberark/pvwa)
 
 The PAS Orchestrator role is an example of how to use the component roles 
 demonstrating paralel installation on multiple remote servers 
