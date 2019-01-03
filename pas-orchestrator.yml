@@ -1,0 +1,3 @@
+---
+
+- import_playbook: tasks/main.yml

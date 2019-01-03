@@ -1,0 +1,25 @@
+---
+# file: group_vars/windows
+any_errors_fatal: false
+ansible_python_interpreter: python
+ansible_winrm_server_cert_validation: ignore
+ansible_connection: winrm
+ansible_winrm_transport: credssp
+ansible_port: 5986
+ansible_winrm_read_timeout_sec: 800
+ansible_winrm_operation_timeout_sec: 600
+
+ansible_user: "{{ hostvars['localhost']['ansible_user'] }}"
+ansible_password: "{{ hostvars['localhost']['ansible_password'] }}"
+accept_eula: "{{ hostvars['localhost']['accept_eula'] }}"
+vault_ip: "{{ hostvars['localhost']['vault_ip'] }}"
+vault_password: "{{ hostvars['localhost']['vault_password'] }}"
+cpm_zip_file_path: "{{ hostvars['localhost']['cpm_zip_file_path'] }}"
+pvwa_zip_file_path: "{{ hostvars['localhost']['pvwa_zip_file_path'] }}"
+psm_zip_file_path: "{{ hostvars['localhost']['psm_zip_file_path'] }}"
+
+ansible_become: yes
+ansible_become_method: runas
+ansible_become_user: "{{ ansible_user }}"
+ansible_become_password: "{{ ansible_password }}"
+ansible_become_flags: logon_type=new_credentials logon_flags=netcredentials_only

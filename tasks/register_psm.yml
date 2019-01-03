@@ -1,0 +1,7 @@
+---
+
+- name: Register psm
+  include_role:
+    name: psm
+  vars:
+    - psm_registration: true

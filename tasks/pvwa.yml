@@ -1,0 +1,11 @@
+---
+
+- include_role:
+    name: pvwa
+  vars:
+    - pvwa_extract: true
+    - pvwa_prerequisites: true
+    - pvwa_install: true
+    - pvwa_postinstall: true
+    - pvwa_hardening: true
+    - pvwa_registration: false
