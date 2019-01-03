@@ -104,12 +104,16 @@ Inventory consists of a group of variables:
 
 ## Running the  playbook:
 
-To run the above playbook execute the following command:
+To run the above playbook execute the following command example :
 
-    ansible-playbook -i ./inventories/hosts.yml pas-orchestrator.yml -e "vault_ip=VAULT_IP vault_password=VAULT_PASSWROD ansible_user=DOMAIN\USER ansible_password=DOMAIN_PASSWORD cpm_zip_file_path=/tmp/pas_packages/cpm.zip pvwa_zip_file_path=/tmp/pas_packages/pvwa.zip psm_zip_file_path=/tmp/pas_packages/psm.zip psm_out_of_domain=false accept_eula=Yes"
+    ansible-playbook -i ./inventories/hosts.yml pas-orchestrator.yml -e "vault_ip=VAULT_IP ansible_user=DOMAIN\USER cpm_zip_file_path=/tmp/pas_packages/cpm.zip pvwa_zip_file_path=/tmp/pas_packages/pvwa.zip psm_zip_file_path=/tmp/pas_packages/psm.zip psm_out_of_domain=false accept_eula=Yes"
     
-It is possible to set any of the roles parameter through the PAS Orchestrator  , 
-For example : if you need to deploy the PSM without hardening add the following to the execution line: psm_hardening=false
+** Vault and remote host passwords are entered Vis Prompt 
+    
+Command example for out of Domain , no hardening deployment in drive D
+
+    ansible-playbook -i ./inventories/hosts.yml pas-orchestrator.yml -e "vault_ip=VAULT_IP ansible_user=DOMAIN\USER cpm_zip_file_path=/tmp/pas_packages/cpm.zip pvwa_zip_file_path=/tmp/pas_packages/pvwa.zip psm_zip_file_path=/tmp/pas_packages/psm.zip psm_out_of_domain=TRUE accept_eula=Yes psm_installation_drive=D: cpm_installation_drive=D: pvwa_installation_drive=D: psm_hardening=FALSE cpm_hardening=FALSE pvwa_hardening=FALSE"
+    
 
 ## Troubleshooting
 In case of a failure a Log folder with be created on the Ansible workstation with the relevant logs copied from the remote host machine. 
