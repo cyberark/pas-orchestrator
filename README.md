@@ -11,7 +11,7 @@ CyberArk has created a tailored installation and deployment method for each plat
  Each PAS component’s Ansible role is responsible for the component end-2-end deployment, which includes the following stages for each component:
 - Copy the installation package to the target server
 - Installing prerequisites
-- Installing the component silently
+ - Silent installation of the component
 - Post installation procedure and hardening
 - Registration in the Vault
 
