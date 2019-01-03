@@ -1,6 +1,6 @@
  # PAS-Orchestrator
 
-In today’s modern infrastructure, organizations are moving towards hybrid environments, which consist of multiple public clouds, private clouds and on-premise platforms. 
+ In today’s modern infrastructure, organizations are moving towards hybrid environments, which consist of multiple public clouds, private clouds and on-premises platforms. 
 
 CyberArk has created a tailored installation and deployment method for each platform to enable easy implementation. For example, CloudFormation templates enable easy deployment on AWS, while Azure Resource Manager (ARM) templates enable easy deployment on Azure. However, it is difficult to combine the different methods to orchestrate and automate a hybrid deployment.
 
