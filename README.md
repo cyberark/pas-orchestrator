@@ -6,7 +6,7 @@ CyberArk has created a tailored installation and deployment method for each plat
 
 PAS Orchestrator is a set of Ansible Roles which provides a holistic solution to deploying CyberArk Core PAS components simultaneously in multiple environments, regardless of the environment’s location. 
 
-The Ansible Roles are responsible for the entire deployment process, and can be integrated with the organization’s CI/CD pipeline.
+ The Ansible roles are responsible for the entire deployment process, and can be integrated with the organization’s CI/CD pipeline.
 
 Each PAS component’s Ansible Role is responsible for the component end-2-end deployment, which inclues the following stages for each component:
 - Copy the installation package to the target server
