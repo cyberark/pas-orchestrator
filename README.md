@@ -114,7 +114,7 @@ Command example for out of Domain , no hardening deployment in drive D:
     ansible-playbook -i ./inventories/hosts.yml pas-orchestrator.yml -e "vault_ip=VAULT_IP ansible_user=DOMAIN\USER cpm_zip_file_path=/tmp/pas_packages/cpm.zip pvwa_zip_file_path=/tmp/pas_packages/pvwa.zip psm_zip_file_path=/tmp/pas_packages/psm.zip {psm_out_of_domain:true} accept_eula=Yes psm_installation_drive=D: cpm_installation_drive=D: pvwa_installation_drive=D: {psm_hardening:false} {cpm_hardening:false} {pvwa_hardening:false}"
 
     
-** *Vault and remote host passwords are entered Vis Prompt*   
+ ** *Vault and remote host passwords are entered via Prompt*   
 
 ## Troubleshooting
 In case of a failure a Log folder with be created on the Ansible workstation with the relevant logs copied from the remote host machine. 
