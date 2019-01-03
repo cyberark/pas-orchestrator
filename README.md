@@ -111,7 +111,8 @@ To run the above playbook execute the following command example :
     
 Command example for out of Domain , no hardening deployment in drive D:
 
-    ansible-playbook -i ./inventories/hosts.yml pas-orchestrator.yml -e "vault_ip=VAULT_IP ansible_user=DOMAIN\USER cpm_zip_file_path=/tmp/pas_packages/cpm.zip pvwa_zip_file_path=/tmp/pas_packages/pvwa.zip psm_zip_file_path=/tmp/pas_packages/psm.zip psm_out_of_domain=TRUE accept_eula=Yes psm_installation_drive=D: cpm_installation_drive=D: pvwa_installation_drive=D: psm_hardening=FALSE cpm_hardening=FALSE pvwa_hardening=FALSE"
+    ansible-playbook -i ./inventories/hosts.yml pas-orchestrator.yml -e "vault_ip=VAULT_IP ansible_user=DOMAIN\USER cpm_zip_file_path=/tmp/pas_packages/cpm.zip pvwa_zip_file_path=/tmp/pas_packages/pvwa.zip psm_zip_file_path=/tmp/pas_packages/psm.zip {psm_out_of_domain:true} accept_eula=Yes psm_installation_drive=D: cpm_installation_drive=D: pvwa_installation_drive=D: {psm_hardening:false} {cpm_hardening:false} {pvwa_hardening:false}"
+
     
 ** *Vault and remote host passwords are entered Vis Prompt*   
 
