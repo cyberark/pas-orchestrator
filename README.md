@@ -121,7 +121,7 @@ Command example for out of Domain , no hardening deployment in drive D:
 
 
 ## Idempotence
-Every stage in the roles contains validation and can be run multiple time without error .
+ Every stage in the roles contains validation and can be run multiple times without error.
 
 
 ## License
