@@ -117,7 +117,7 @@ Command example for out of Domain , no hardening deployment in drive D:
  ** *Vault and remote host passwords are entered via Prompt*   
 
 ## Troubleshooting
-In case of a failure a Log folder with be created on the Ansible workstation with the relevant logs copied from the remote host machine. 
+ In case of a failure, a Log folder with be created on the Ansible workstation with the relevant logs copied from the remote host machine. 
 
 
 ## Idempotence
