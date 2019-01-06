@@ -33,7 +33,7 @@
       private: no
 
     - name: pvwa_zip_file_path
-      prompt: "Please enter pvwa package location"
+      prompt: "Please enter PVWA installation package location"
       default: "/tmp/pas_packages/pvwa.zip"
       private: no
 
