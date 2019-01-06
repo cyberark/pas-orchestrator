@@ -28,7 +28,7 @@
       private: yes
 
     - name: cpm_zip_file_path
-      prompt: "Please enter cpm package location"
+      prompt: "Please enter CPM installation package location"
       default: "/tmp/pas_packages/cpm.zip"
       private: no
 
