@@ -19,7 +19,7 @@
       private: yes
 
     - name: ansible_user
-      prompt: "Please enter the Hosts Administrator username"
+      prompt: "Please enter the Hosts administrator username"
       default: "Administrator"
       private: no
 
@@ -28,17 +28,17 @@
       private: yes
 
     - name: cpm_zip_file_path
-      prompt: "Please enter cpm package location"
+      prompt: "Please enter CPM installation package location"
       default: "/tmp/pas_packages/cpm.zip"
       private: no
 
     - name: pvwa_zip_file_path
-      prompt: "Please enter pvwa package location"
+      prompt: "Please enter PVWA installation package location"
       default: "/tmp/pas_packages/pvwa.zip"
       private: no
 
     - name: psm_zip_file_path
-      prompt: "Please enter psm package location"
+      prompt: "Please enter PSM installation package location"
       default: "/tmp/pas_packages/psm.zip"
       private: no
 
