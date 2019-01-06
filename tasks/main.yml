@@ -38,7 +38,7 @@
       private: no
 
     - name: psm_zip_file_path
-      prompt: "Please enter psm package location"
+      prompt: "Please enter PSM installation package location"
       default: "/tmp/pas_packages/psm.zip"
       private: no
 
