@@ -19,7 +19,7 @@
       private: yes
 
     - name: ansible_user
-      prompt: "Please enter the Hosts Administrator username"
+      prompt: "Please enter the Hosts administrator username"
       default: "Administrator"
       private: no
 
