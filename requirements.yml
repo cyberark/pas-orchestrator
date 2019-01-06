@@ -10,7 +10,6 @@
   scm: git
   version: v10.6
 
-
 # psm git repo
 - src: git@github.com:cyberark/psm.git
   scm: git
