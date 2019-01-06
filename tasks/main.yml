@@ -7,6 +7,7 @@
 
     - name: accept_eula
       prompt: "Please accept EULA"
+      default: "No"
       private: no
 
     - name: vault_ip
@@ -19,6 +20,7 @@
 
     - name: ansible_user
       prompt: "Please enter the Hosts Administrator username"
+      default: "Administrator"
       private: no
 
     - name: ansible_password
@@ -26,15 +28,18 @@
       private: yes
 
     - name: cpm_zip_file_path
-      prompt: "Please enter cpm package location (etc. /tmp/pas_packages/cpm.zip)"
+      prompt: "Please enter cpm package location"
+      default: "/tmp/pas_packages/cpm.zip"
       private: no
 
     - name: pvwa_zip_file_path
-      prompt: "Please enter pvwa package location (etc. /tmp/pas_packages/pvwa.zip)"
+      prompt: "Please enter pvwa package location"
+      default: "/tmp/pas_packages/pvwa.zip"
       private: no
 
     - name: psm_zip_file_path
-      prompt: "Please enter psm package location (etc. /tmp/pas_packages/psm.zip)"
+      prompt: "Please enter psm package location"
+      default: "/tmp/pas_packages/psm.zip"
       private: no
 
   tasks:
