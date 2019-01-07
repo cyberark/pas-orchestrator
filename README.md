@@ -39,7 +39,6 @@ demonstrating paralel installation on multiple remote servers
 
  ## Environment setup 
 ------------
-- Create Linux server to be used as the Ansible workstation 
 - Get the PAS Orchestrator Role 
     ``` 
     git clone https://github.com/cyberark/pas-orchestrator.git 
@@ -53,6 +52,9 @@ demonstrating paralel installation on multiple remote servers
     cd pas-orchestrator
     ansible-galaxy install --roles-path ./roles --role-file requirements.yml
     ```
+- Update the inventories hosts file with the remote hosts IPs 
+
+
 
 ## Role Variables
 
@@ -68,7 +70,6 @@ These are the variables used in this playbook
 | vault_username                   | no           | "administrator"                                                                | vault username to perform registration   |
 | vault_password                   | yes          | None                                                                           | vault password to perform registration   |
 | accept_eula                      | yes          | "No"                                                                           | Accepting EULA condition                 |
-| connect_with_rdp                  | yes          | "No"                                                                           | This will disable NLA on the server      |
 | cpm_zip_file_path                | yes          | None                                                                           | Path to zipped CPM image                 |
 | pvwa_zip_file_path               | yes          | None                                                                           | Path to zipped PVWA image                |
 | psm_zip_file_path                | yes          | None                                                                           | Path to zipped PSM image                 |
@@ -150,6 +151,7 @@ Command example for out of Domain , no hardening deployment in drive D:
 
 ## Troubleshooting
  In case of a failure, a Log folder with be created on the Ansible workstation with the relevant logs copied from the remote host machine. 
+ The logs are available under  - pas-orchestrator/tasks/logs
 
 
 ## Idempotence
