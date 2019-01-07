@@ -47,7 +47,7 @@
     - name: Set required parameters from prompt
       include_tasks: set_facts.yml
 
-- hosts: cpm:pvwa:psm
+- hosts: pvwa:cpm:psm
   strategy: free
 
   tasks:
@@ -62,14 +62,14 @@
 
 # PSM Register Component Requires the First PVWA IP Address
 
-- hosts: cpm:pvwa:psm
+- hosts: pvwa:cpm:psm
   serial: 1
   tasks:
 
-    - include_tasks: register_cpm.yml
-      when: "'cpm' in group_names"
     - include_tasks: register_pvwa.yml
       when: "'pvwa' in group_names"
+    - include_tasks: register_cpm.yml
+      when: "'cpm' in group_names"
     - include_tasks: register_psm.yml
       vars:
         pvwa_ip: "{{ groups['pvwa'][0] }}"
