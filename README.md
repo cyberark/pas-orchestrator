@@ -157,6 +157,9 @@ Command example for out of Domain , no hardening deployment in drive D:
 ## Idempotence
  Every stage in the roles contains validation and can be run multiple times without error.
 
+## Limitations 
+- Only single component per server is supported 
+- There is a check sum verification to the CD image zip file , it must be the original cyberArk release 
 
 ## License
 
