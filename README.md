@@ -37,7 +37,22 @@ demonstrating paralel installation on multiple remote servers
 - Administrator access to the remote host 
 - CyberArk components CD image on the workstation running the playbook 
 
-
+ ## Environment setup 
+------------
+- Create Linux server to be used as the Ansible workstation 
+- Get the PAS Orchestrator Role 
+    ``` 
+    git clone https://github.com/cyberark/pas-orchestrator.git 
+    ```
+- Install Ansible 
+    ``` 
+    pip install ansible pywinrm pywinrm[credssp] requests-credssp --user 
+    ```
+- Get the components roles 
+    ``` 
+    cd pas-orchestrator
+    ansible-galaxy install --roles-path ./roles --role-file requirements.yml
+    ```
 
 ## Role Variables
 
@@ -80,26 +95,43 @@ This process executes the registration of each component in serial
 
 ## Inventory
 
-Inventory consists of a group of variables:
+Prior to running pas-orchestrator hosts file should be "updated" [https://github.com/cyberark/pas-orchestrator/blob/master/inventories/production/hosts] with relevant hosts data.
 
-    ---
-    windows:
-      children:
-        pvwa:
-          hosts:
-            1.2.3.4;
-            1.2.3.14:
-            1.2.3.24:
-        cpm:
-          hosts:
-            2.2.2.2;
-            2.2.2.22;
-            2.2.2.222;
-        psm:
-          hosts:
-            9.8.7.6;
-            5.4.3.2;
-            9.1.7.3;
+    # file: production
+    # TODO: Add description how to add hosts
+
+    [pvwa]
+    # Add here list of hosts or ip adresses of pvwa dedicated machines
+    # pvwa01.example.com
+    # pvwa02.example.com
+    10.2.0.155
+
+
+    [cpm]
+    # Add here list of hosts or ip adresses of cpm dedicated machines
+    # cpm01.example.com
+    # cpm02.example.com
+    10.2.0.155
+
+
+    [psm]
+    # Add here list of hosts or ip adresses of psm dedicated machines
+    # psm01.example.com
+    # psm02.example.com
+    10.2.0.155
+
+
+    [psmp]
+    # Add here list of hosts or ip adresses of psmp dedicated machines
+    # psmp01.example.com
+    # psmp02.example.com
+
+
+    # DO NOT EDIT BELOW!!!
+    [windows:children]
+    pvwa
+    cpm
+    psm
 
 
 ## Running the  playbook:
