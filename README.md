@@ -17,7 +17,7 @@ CyberArk has created a tailored installation and deployment method for each plat
 
 Ansible Roles for PVWA, CPM and PSM can be found in the following links:
  - PSM: [https://github.com/cyberark/psm](https://github.com/cyberark/psm)
- - CPM: [https://github.com/cyberark/psm](https://github.com/cyberark/cpm)
+ - CPM: [https://github.com/cyberark/cpm](https://github.com/cyberark/cpm)
  - PVWA: [https://github.com/cyberark/pvwa](https://github.com/cyberark/pvwa)
 
 The PAS Orchestrator role is an example of how to use the component roles 
@@ -37,6 +37,23 @@ demonstrating paralel installation on multiple remote servers
 - Administrator access to the remote host 
 - CyberArk components CD image on the workstation running the playbook 
 
+ ## Environment setup 
+------------
+- Get the PAS Orchestrator Role 
+    ``` 
+    git clone https://github.com/cyberark/pas-orchestrator.git 
+    ```
+- Install Ansible 
+    ``` 
+    pip install ansible pywinrm pywinrm[credssp] requests-credssp --user 
+    ```
+- Get the components roles 
+    ``` 
+    cd pas-orchestrator
+    ansible-galaxy install --roles-path ./roles --role-file requirements.yml
+    ```
+- Update the inventories hosts file with the remote hosts IPs 
+
 
 
 ## Role Variables
@@ -53,7 +70,6 @@ These are the variables used in this playbook
 | vault_username                   | no           | "administrator"                                                                | vault username to perform registration   |
 | vault_password                   | yes          | None                                                                           | vault password to perform registration   |
 | accept_eula                      | yes          | "No"                                                                           | Accepting EULA condition                 |
-| connect_with_rdp                  | yes          | "No"                                                                           | This will disable NLA on the server      |
 | cpm_zip_file_path                | yes          | None                                                                           | Path to zipped CPM image                 |
 | pvwa_zip_file_path               | yes          | None                                                                           | Path to zipped PVWA image                |
 | psm_zip_file_path                | yes          | None                                                                           | Path to zipped PSM image                 |
@@ -80,49 +96,70 @@ This process executes the registration of each component in serial
 
 ## Inventory
 
-Inventory consists of a group of variables:
+Prior to running pas-orchestrator hosts file should be "updated" [https://github.com/cyberark/pas-orchestrator/blob/master/inventories/production/hosts] with relevant hosts data.
 
-    ---
-    windows:
-      children:
-        pvwa:
-          hosts:
-            1.2.3.4;
-            1.2.3.14:
-            1.2.3.24:
-        cpm:
-          hosts:
-            2.2.2.2;
-            2.2.2.22;
-            2.2.2.222;
-        psm:
-          hosts:
-            9.8.7.6;
-            5.4.3.2;
-            9.1.7.3;
+    # file: production
+    # TODO: Add description how to add hosts
+
+    [pvwa]
+    # Add here list of hosts or ip adresses of pvwa dedicated machines
+    # pvwa01.example.com
+    # pvwa02.example.com
+    10.2.0.155
+
+
+    [cpm]
+    # Add here list of hosts or ip adresses of cpm dedicated machines
+    # cpm01.example.com
+    # cpm02.example.com
+    10.2.0.155
+
+
+    [psm]
+    # Add here list of hosts or ip adresses of psm dedicated machines
+    # psm01.example.com
+    # psm02.example.com
+    10.2.0.155
+
+
+    [psmp]
+    # Add here list of hosts or ip adresses of psmp dedicated machines
+    # psmp01.example.com
+    # psmp02.example.com
+
+
+    # DO NOT EDIT BELOW!!!
+    [windows:children]
+    pvwa
+    cpm
+    psm
 
 
 ## Running the  playbook:
 
  To run the above playbook, execute the following command example :
 
-    ansible-playbook -i ./inventories/production pas-orchestrator.yml -e "vault_ip=VAULT_IP ansible_user=DOMAIN\USER cpm_zip_file_path=/tmp/pas_packages/cpm.zip pvwa_zip_file_path=/tmp/pas_packages/pvwa.zip psm_zip_file_path=/tmp/pas_packages/psm.zip {psm_out_of_domain:false} accept_eula=Yes"
+    ansible-playbook -i ./inventories/production pas-orchestrator.yml -e "vault_ip=VAULT_IP ansible_user=DOMAIN\USER cpm_zip_file_path=/tmp/pas_packages/cpm.zip pvwa_zip_file_path=/tmp/pas_packages/pvwa.zip psm_zip_file_path=/tmp/pas_packages/psm.zip  connect_with_rdp=Yes accept_eula=Yes"
     
     
 Command example for out of Domain , no hardening deployment in drive D:
 
-    ansible-playbook -i ./inventories/production pas-orchestrator.yml -e "vault_ip=VAULT_IP ansible_user=DOMAIN\USER cpm_zip_file_path=/tmp/pas_packages/cpm.zip pvwa_zip_file_path=/tmp/pas_packages/pvwa.zip psm_zip_file_path=/tmp/pas_packages/psm.zip {psm_out_of_domain:true} accept_eula=Yes psm_installation_drive=D: cpm_installation_drive=D: pvwa_installation_drive=D: {psm_hardening:false} {cpm_hardening:false} {pvwa_hardening:false}"
+    ansible-playbook -i ./inventories/production pas-orchestrator.yml -e "vault_ip=VAULT_IP ansible_user=DOMAIN\USER cpm_zip_file_path=/tmp/pas_packages/cpm.zip pvwa_zip_file_path=/tmp/pas_packages/pvwa.zip psm_zip_file_path=/tmp/pas_packages/psm.zip {psm_out_of_domain:true} connect_with_rdp=Yes accept_eula=Yes psm_installation_drive=D: cpm_installation_drive=D: pvwa_installation_drive=D: {psm_hardening:false} {cpm_hardening:false} {pvwa_hardening:false}"
 
     
  ** *Vault and remote host passwords are entered via Prompt*   
 
 ## Troubleshooting
  In case of a failure, a Log folder with be created on the Ansible workstation with the relevant logs copied from the remote host machine. 
+ The logs are available under  - pas-orchestrator/tasks/logs
 
 
 ## Idempotence
  Every stage in the roles contains validation and can be run multiple times without error.
 
+## Limitations 
+- Only single component per server is supported 
+- There is a check sum verification to the CD image zip file , it must be the original cyberArk release 
 
 ## License
 
