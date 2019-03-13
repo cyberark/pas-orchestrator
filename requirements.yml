@@ -3,14 +3,14 @@
 # pvwa git repo
 - src: https://github.com/cyberark/pvwa.git
   scm: git
-  version: v10.7
+  version: v10.8.1
 
 # cpm git repo
 - src: https://github.com/cyberark/cpm.git
   scm: git
-  version: v10.7
+  version: v10.8
 
 # psm git repo
 - src: https://github.com/cyberark/psm.git
   scm: git
-  version: v10.7
+  version: v10.8
