@@ -71,6 +71,4 @@
     - include_tasks: register_cpm.yml
       when: "'cpm' in group_names"
     - include_tasks: register_psm.yml
-      vars:
-        pvwa_ip: "{{ groups['pvwa'][0] }}"
       when: "'psm' in group_names"
