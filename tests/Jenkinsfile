@@ -22,6 +22,13 @@ pipeline {
         }
       }
     }
+    stage('Install roles') {
+      steps {
+        script {
+          sh(script: ".testenv/bin/ansible-galaxy install requirements.yml --force", returnStdout: true)
+        }
+      }
+    }
     stage('yamllint validation') {
       steps {
         script {
