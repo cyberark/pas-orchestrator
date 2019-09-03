@@ -25,7 +25,7 @@ pipeline {
     stage('Install roles') {
       steps {
         script {
-          sh(script: ".testenv/bin/ansible-galaxy install requirements.yml --force", returnStdout: true)
+          sh(script: ".testenv/bin/ansible-galaxy install -r requirements.yml --roles-path ./roles --force", returnStdout: true)
         }
       }
     }
