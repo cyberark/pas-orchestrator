@@ -12,6 +12,7 @@
         - pvwa_postinstall: true
         - pvwa_hardening: true
         - pvwa_registration: false
+        - pvwa_official: true
 
   rescue:
 
@@ -24,3 +25,4 @@
         - pvwa_postinstall: true
         - pvwa_hardening: true
         - pvwa_registration: false
+        - pvwa_official: true
