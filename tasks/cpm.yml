@@ -9,3 +9,4 @@
     - cpm_postinstall: true
     - cpm_hardening: true
     - cpm_registration: false
+    - cpm_official: false
