@@ -9,3 +9,4 @@
     - psm_postinstall: true
     - psm_hardening: true
     - psm_registration: false
+    - psm_official: false
