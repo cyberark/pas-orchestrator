@@ -31,7 +31,6 @@ pipeline {
       steps {
         sh '''
           source .testenv/bin/activate
-          cd ..
           ansible-galaxy install -r requirements.yml
         '''
       }
