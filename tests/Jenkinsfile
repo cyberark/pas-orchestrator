@@ -19,11 +19,6 @@ pipeline {
         '''
       }
     }
-    // stage('ansible-lint validation') {
-    //   steps {
-    //     sh '.testenv/bin/ansible-lint tasks/* defaults/* meta/*'
-    //   }
-    // }
     stage('yamllint validation') {
       steps {
         sh '''
@@ -120,13 +115,6 @@ pipeline {
           }
         }
       }
-    }
-  }
-  post {
-    always {
-      sh '''
-        echo hello
-      '''
     }
   }
 }
