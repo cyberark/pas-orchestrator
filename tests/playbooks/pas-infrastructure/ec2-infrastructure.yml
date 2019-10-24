@@ -37,7 +37,7 @@
 
     - name: Create security group for DC
       ec2_group:
-        name: PAS-Orchestrator-DC
+        name: "PAS-Orchestrator-DC-{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}"
         description: Security Group for PAS Orchestrator Domain Controller
         vpc_id: "{{ my_vpc.stdout }}"
         rules:
@@ -47,7 +47,7 @@
 
     - name: Create security group for Components
       ec2_group:
-        name: PAS-Orchestrator-Components
+        name: "PAS-Orchestrator-Components-{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}"
         description: Security Group for PAS Orchestrator Components
         vpc_id: "{{ my_vpc.stdout }}"
         rules:
