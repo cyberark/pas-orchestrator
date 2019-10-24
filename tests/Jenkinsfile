@@ -74,6 +74,7 @@ pipeline {
         }
         stage('Provision out-of-domain testing environment') {
           steps {
+            sleep 10
             withCredentials([usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
               sh '''
                 source .testenv/bin/activate
