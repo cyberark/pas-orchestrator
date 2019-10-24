@@ -25,7 +25,7 @@
 
     - name: Create security group for Vault
       ec2_group:
-        name: PAS-Orchestrator-Vault
+        name: "PAS-Orchestrator-Vault-{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}"
         description: Security Group for PAS Orchestrator Vault
         vpc_id: "{{ my_vpc.stdout }}"
         rules:
