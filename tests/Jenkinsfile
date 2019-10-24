@@ -56,6 +56,7 @@ pipeline {
               }
             }
         }
+      }
     }
     stage('Provision testing environments') {
       parallel {
