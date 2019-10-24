@@ -61,7 +61,7 @@
 
     - name: Get Vault machine details from CloudFormation
       ec2_instance_facts:
-        region: us-east-1
+        region: "{{ my_region.stdout }}"
         instance_ids:
           - "{{ cf_output | json_query('[?logical_resource_id == `VaultMachine` ] | [0].physical_resource_id') }}"
       register: vault_machine
