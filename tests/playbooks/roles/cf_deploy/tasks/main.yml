@@ -3,17 +3,17 @@
 
 - name: Get Timestamp and Store it in a variable
   set_fact: "timestamp={{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}"
-  
+
 - name: Set String for CloudFormation Stack ID
   set_fact:
     cloudformation_stack_id: "ansible-cloudformation-{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}"
-  
+
 - name: Create workspace directory on temp folder
   file:
     path: "/tmp/tmp-{{ timestamp }}"
     state: directory
   register: workspace
-  
+
 - set_fact:
     tmp_path: "{{ workspace.path }}"
 
@@ -48,7 +48,7 @@
     tags:
       Stack: "ansible-cloudformation"
   register: cf
-  
+
 - name: Register Output to ansible fact
   set_fact:
     cf_output: "{{ cf.stack_resources }}"

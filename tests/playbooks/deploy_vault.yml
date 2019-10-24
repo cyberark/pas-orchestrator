@@ -3,26 +3,26 @@
 - hosts: localhost
   gather_facts: no
   tasks:
-  
+
     - name: Get current region
       shell: |
         echo $AWS_REGION
       register: my_region
-  
+
     - name: Get current vpc id
       shell: |
         INTERFACE=$(curl --silent http://169.254.169.254/latest/meta-data/network/interfaces/macs/)
         VPC_ID=$(curl --silent http://169.254.169.254/latest/meta-data/network/interfaces/macs/${INTERFACE}/vpc-id)
         echo $VPC_ID
       register: my_vpc
-    
+
     - name: Get current subnet id
       shell: |
         INTERFACE=$(curl --silent http://169.254.169.254/latest/meta-data/network/interfaces/macs/)
         SUBNET_ID=$(curl --silent http://169.254.169.254/latest/meta-data/network/interfaces/macs/${INTERFACE}/subnet-id)
         echo $SUBNET_ID
       register: my_subnet
-    
+
     - name: Create security group for Vault
       ec2_group:
         name: PAS-Orchestrator-Vault
@@ -35,7 +35,7 @@
             cidr_ip: 0.0.0.0/0
             rule_desc: Allow all traffic on port 1858
       register: my_sg
-  
+
     - name: Deploy Vault
       include_role:
         name: cf_deploy

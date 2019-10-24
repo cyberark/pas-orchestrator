@@ -21,6 +21,6 @@
     user_data: "{{ ansible_user_data }}"
     instance_profile_name: "{{ instance_profile | default('') }}"
   register: ec2_instances
-  
+
 - set_fact:
     ec2_machines: "{{ ec2_instances }}"

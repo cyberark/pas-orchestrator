@@ -17,14 +17,14 @@
       </powershell>
 
   tasks:
-  
+
     - name: Get current vpc id
       shell: |
         INTERFACE=$(curl --silent http://169.254.169.254/latest/meta-data/network/interfaces/macs/)
         VPC_ID=$(curl --silent http://169.254.169.254/latest/meta-data/network/interfaces/macs/${INTERFACE}/vpc-id)
         echo $VPC_ID
       register: my_vpc
-      
+
     - name: Get current subnet id
       shell: |
         INTERFACE=$(curl --silent http://169.254.169.254/latest/meta-data/network/interfaces/macs/)
@@ -44,7 +44,7 @@
           - proto: all
             cidr_ip: 0.0.0.0/0
       register: dc_sg
-      
+
     - name: Create security group for Components
       ec2_group:
         name: PAS-Orchestrator-Components
@@ -56,7 +56,7 @@
             to_port: 65535
             cidr_ip: 0.0.0.0/0
       register: comp_sg
-    
+
     - name: Get latest windows 2012 ami
       ec2_ami_facts:
         owners: 801119661308
