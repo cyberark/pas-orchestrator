@@ -4,37 +4,129 @@ pipeline {
       label 'ansible'
     }
   }
+  environment {
+    AWS_REGION = sh(script: 'curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | python -c "import json,sys;obj=json.load(sys.stdin);print obj[\'region\']"', returnStdout: true).trim()
+    shortCommit = sh(script: "git log -n 1 --pretty=format:'%h'", returnStdout: true).trim()
+  }
   stages {
     stage('Install virtual environment') {
       steps {
-        script {
-          sh(script: 'python -m pip install --user virtualenv')
-          sh(script: 'python -m virtualenv --no-site-packages .testenv')
-          sh(script: 'source ./.testenv/bin/activate')
-          sh(script: '.testenv/bin/pip install -r tests/requirements.txt --no-cache-dir')
-        }
+        sh '''
+            python -m pip install --user virtualenv
+            python -m virtualenv --no-site-packages .testenv
+            source .testenv/bin/activate
+            pip install -r tests/requirements.txt
+        '''
       }
     }
-    stage('ansible-lint validation') {
-      steps {
-        script {
-          sh(script: ".testenv/bin/ansible-lint pas-orchestrator.yml", returnStdout: true)
-        }
-      }
-    }
-    stage('Install roles') {
-      steps {
-        script {
-          sh(script: ".testenv/bin/ansible-galaxy install -r requirements.yml --roles-path ./roles --force", returnStdout: true)
-        }
-      }
-    }
+    // stage('ansible-lint validation') {
+    //   steps {
+    //     sh '.testenv/bin/ansible-lint tasks/* defaults/* meta/*'
+    //   }
+    // }
     stage('yamllint validation') {
       steps {
-        script {
-          sh(script: ".testenv/bin/yamllint .", returnStdout: true)
+        sh '''
+            source .testenv/bin/activate
+            yamllint .
+        '''
+      }
+    }
+    stage('Install ansible roles') {
+      steps {
+        sh '''
+          cd ..
+          ansible-galaxy install -r requirements.yml
+        '''
+      }
+    }
+    stage('Deploy Vaults') {
+      parallel {
+        stage('Deploy Vault for in-domain environment') {
+            steps {
+              withCredentials([usernamePassword(credentialsId: 'default_ansible_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
+                sh '''
+                  ansible-playbook playbooks/deploy_vault.yml -v -e "keypair=pcloud-test-instances-KP bucket=sashac ansible_user=$ansible_user ansible_password=$ansible_password domain=yes"
+                '''
+              }
+            }
+        }
+        stage('Deploy Vault for out-of-domain environment') {
+            steps {
+              sleep 10
+              withCredentials([usernamePassword(credentialsId: 'default_ansible_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
+                sh '''
+                  ansible-playbook playbooks/deploy_vault.yml -v -e "keypair=pcloud-test-instances-KP bucket=sashac ansible_user=$ansible_user ansible_password=$ansible_password domain=no"
+                '''
+              }
+            }
+        }
+    }
+    stage('Provision testing environments') {
+      parallel {
+        stage('Provision in-domain testing environment') {
+          steps {
+            withCredentials([usernamePassword(credentialsId: 'default_ansible_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
+              sh '''
+                ansible-playbook playbooks/pas-infrastructure/ec2-infrastructure.yml -e "aws_region=$AWS_REGION keypair=pcloud-test-instances-KP ec2_instance_type=m4.large public_ip=no pas_count=2 indomain=yes ansible_user=$ansible_user ansible_password=$ansible_password"
+              '''
+            }
+          }
+        }
+        stage('Provision out-of-domain testing environment') {
+          steps {
+            withCredentials([usernamePassword(credentialsId: 'default_ansible_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
+              sh '''
+                ansible-playbook playbooks/pas-infrastructure/ec2-infrastructure.yml -e "aws_region=$AWS_REGION keypair=pcloud-test-instances-KP ec2_instance_type=m4.large public_ip=no pas_count=2 indomain=no ansible_user=$ansible_user ansible_password=$ansible_password"
+              '''
+            }
+          }
         }
       }
+    }
+    stage('Download packages') {
+      steps {
+        sh '''
+          aws s3api get-object --bucket cloud-initiatives-pipeline-bucket --key "Packages/v11.1/Privileged Session Manager-Rls-v11.1.zip" /tmp/packages/psm.zip
+          aws s3api get-object --bucket cloud-initiatives-pipeline-bucket --key "Packages/v11.1/Central Policy Manager-Rls-v11.1.zip" /tmp/packages/cpm.zip
+          aws s3api get-object --bucket cloud-initiatives-pipeline-bucket --key "Packages/v11.1/Password Vault Web Access-Rls-v11.1.zip" /tmp/packages/pvwa.zip
+        '''
+      }
+    }
+    stage('Run pas-orchestrator') {
+      parallel {
+        stage('Run pas-orchestrator in-domain') {
+          steps {
+            withCredentials([usernamePassword(credentialsId: 'default_ansible_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
+              sh '''
+                VAULT_IP=$(cat /tmp/vault_ip_domain_yes.txt)
+                cp -r playbooks/pas-infrastructure/outputs/hosts_domain_yes.yml ../inventories/staging/hosts_domain_yes.yml
+                cd ..
+                ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_domain_yes.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP vault_password=$ansible_password cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip connect_with_rdp=yes ansible_user='cyberark.com\$ansible_user' ansible_password=$ansible_password"
+              '''
+            }
+          }
+        }
+        stage('Run pas-orchestrator out-of-domain') {
+          steps {
+            withCredentials([usernamePassword(credentialsId: 'default_ansible_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
+              sh '''
+                VAULT_IP=$(cat /tmp/vault_ip_domain_no.txt)
+                cp -r playbooks/pas-infrastructure/outputs/hosts_domain_no.yml ../inventories/staging/hosts_domain_no.yml
+                cd ..
+                ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_domain_no.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP vault_password=$ansible_password {psm_out_of_domain:true} cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip connect_with_rdp=yes ansible_user='$ansible_user' ansible_password=$ansible_password"
+              '''
+            }
+          }
+        }
+      }
+    }
+  }
+  post {
+    always {
+      sh '''
+        echo hello
+      '''
     }
   }
 }
