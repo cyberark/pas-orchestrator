@@ -30,6 +30,7 @@ pipeline {
     stage('Install ansible roles') {
       steps {
         sh '''
+          source .testenv/bin/activate
           cd ..
           ansible-galaxy install -r requirements.yml
         '''
@@ -41,6 +42,7 @@ pipeline {
             steps {
               withCredentials([usernamePassword(credentialsId: 'default_ansible_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
                 sh '''
+                  source .testenv/bin/activate
                   ansible-playbook playbooks/deploy_vault.yml -v -e "keypair=pcloud-test-instances-KP bucket=sashac ansible_user=$ansible_user ansible_password=$ansible_password domain=yes"
                 '''
               }
@@ -51,6 +53,7 @@ pipeline {
               sleep 10
               withCredentials([usernamePassword(credentialsId: 'default_ansible_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
                 sh '''
+                  source .testenv/bin/activate
                   ansible-playbook playbooks/deploy_vault.yml -v -e "keypair=pcloud-test-instances-KP bucket=sashac ansible_user=$ansible_user ansible_password=$ansible_password domain=no"
                 '''
               }
@@ -64,6 +67,7 @@ pipeline {
           steps {
             withCredentials([usernamePassword(credentialsId: 'default_ansible_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
               sh '''
+                source .testenv/bin/activate
                 ansible-playbook playbooks/pas-infrastructure/ec2-infrastructure.yml -e "aws_region=$AWS_REGION keypair=pcloud-test-instances-KP ec2_instance_type=m4.large public_ip=no pas_count=2 indomain=yes ansible_user=$ansible_user ansible_password=$ansible_password"
               '''
             }
@@ -73,6 +77,7 @@ pipeline {
           steps {
             withCredentials([usernamePassword(credentialsId: 'default_ansible_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
               sh '''
+                source .testenv/bin/activate
                 ansible-playbook playbooks/pas-infrastructure/ec2-infrastructure.yml -e "aws_region=$AWS_REGION keypair=pcloud-test-instances-KP ec2_instance_type=m4.large public_ip=no pas_count=2 indomain=no ansible_user=$ansible_user ansible_password=$ansible_password"
               '''
             }
@@ -95,6 +100,7 @@ pipeline {
           steps {
             withCredentials([usernamePassword(credentialsId: 'default_ansible_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
               sh '''
+                source .testenv/bin/activate
                 VAULT_IP=$(cat /tmp/vault_ip_domain_yes.txt)
                 cp -r playbooks/pas-infrastructure/outputs/hosts_domain_yes.yml ../inventories/staging/hosts_domain_yes.yml
                 cd ..
@@ -107,6 +113,7 @@ pipeline {
           steps {
             withCredentials([usernamePassword(credentialsId: 'default_ansible_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
               sh '''
+                source .testenv/bin/activate
                 VAULT_IP=$(cat /tmp/vault_ip_domain_no.txt)
                 cp -r playbooks/pas-infrastructure/outputs/hosts_domain_no.yml ../inventories/staging/hosts_domain_no.yml
                 cd ..
