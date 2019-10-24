@@ -106,7 +106,7 @@ pipeline {
                 source .testenv/bin/activate
                 VAULT_IP=$(cat /tmp/vault_ip_domain_yes.txt)
                 cp -r tests/playbooks/pas-infrastructure/outputs/hosts_domain_yes.yml inventories/staging/hosts_domain_yes.yml
-                ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_domain_yes.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP vault_password=$ansible_password cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip connect_with_rdp=yes ansible_user=cyberark.com\\$ansible_user ansible_password=$ansible_password"
+                ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_domain_yes.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP vault_password=$ansible_password cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip connect_with_rdp=yes ansible_user='cyberark.com\\\\$ansible_user' ansible_password=$ansible_password"
               '''
             }
           }
