@@ -88,6 +88,7 @@ pipeline {
     stage('Download packages') {
       steps {
         sh '''
+          source .testenv/bin/activate
           aws s3api get-object --bucket cloud-initiatives-pipeline-bucket --key "Packages/v11.1/Privileged Session Manager-Rls-v11.1.zip" /tmp/packages/psm.zip
           aws s3api get-object --bucket cloud-initiatives-pipeline-bucket --key "Packages/v11.1/Central Policy Manager-Rls-v11.1.zip" /tmp/packages/cpm.zip
           aws s3api get-object --bucket cloud-initiatives-pipeline-bucket --key "Packages/v11.1/Password Vault Web Access-Rls-v11.1.zip" /tmp/packages/pvwa.zip
