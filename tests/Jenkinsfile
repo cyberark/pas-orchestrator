@@ -43,7 +43,7 @@ pipeline {
               withCredentials([usernamePassword(credentialsId: 'default_ansible_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
                 sh '''
                   source .testenv/bin/activate
-                  ansible-playbook playbooks/deploy_vault.yml -v -e "keypair=pcloud-test-instances-KP bucket=sashac ansible_user=$ansible_user ansible_password=$ansible_password domain=yes"
+                  ansible-playbook tests/playbooks/deploy_vault.yml -v -e "keypair=pcloud-test-instances-KP bucket=sashac ansible_user=$ansible_user ansible_password=$ansible_password domain=yes"
                 '''
               }
             }
@@ -54,7 +54,7 @@ pipeline {
               withCredentials([usernamePassword(credentialsId: 'default_ansible_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
                 sh '''
                   source .testenv/bin/activate
-                  ansible-playbook playbooks/deploy_vault.yml -v -e "keypair=pcloud-test-instances-KP bucket=sashac ansible_user=$ansible_user ansible_password=$ansible_password domain=no"
+                  ansible-playbook tests/playbooks/deploy_vault.yml -v -e "keypair=pcloud-test-instances-KP bucket=sashac ansible_user=$ansible_user ansible_password=$ansible_password domain=no"
                 '''
               }
             }
@@ -68,7 +68,7 @@ pipeline {
             withCredentials([usernamePassword(credentialsId: 'default_ansible_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
               sh '''
                 source .testenv/bin/activate
-                ansible-playbook playbooks/pas-infrastructure/ec2-infrastructure.yml -e "aws_region=$AWS_REGION keypair=pcloud-test-instances-KP ec2_instance_type=m4.large public_ip=no pas_count=2 indomain=yes ansible_user=$ansible_user ansible_password=$ansible_password"
+                ansible-playbook tests/playbooks/pas-infrastructure/ec2-infrastructure.yml -e "aws_region=$AWS_REGION keypair=pcloud-test-instances-KP ec2_instance_type=m4.large public_ip=no pas_count=2 indomain=yes ansible_user=$ansible_user ansible_password=$ansible_password"
               '''
             }
           }
@@ -78,7 +78,7 @@ pipeline {
             withCredentials([usernamePassword(credentialsId: 'default_ansible_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
               sh '''
                 source .testenv/bin/activate
-                ansible-playbook playbooks/pas-infrastructure/ec2-infrastructure.yml -e "aws_region=$AWS_REGION keypair=pcloud-test-instances-KP ec2_instance_type=m4.large public_ip=no pas_count=2 indomain=no ansible_user=$ansible_user ansible_password=$ansible_password"
+                ansible-playbook tests/playbooks/pas-infrastructure/ec2-infrastructure.yml -e "aws_region=$AWS_REGION keypair=pcloud-test-instances-KP ec2_instance_type=m4.large public_ip=no pas_count=2 indomain=no ansible_user=$ansible_user ansible_password=$ansible_password"
               '''
             }
           }
@@ -102,8 +102,7 @@ pipeline {
               sh '''
                 source .testenv/bin/activate
                 VAULT_IP=$(cat /tmp/vault_ip_domain_yes.txt)
-                cp -r playbooks/pas-infrastructure/outputs/hosts_domain_yes.yml ../inventories/staging/hosts_domain_yes.yml
-                cd ..
+                cp -r tests/playbooks/pas-infrastructure/outputs/hosts_domain_yes.yml inventories/staging/hosts_domain_yes.yml
                 ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_domain_yes.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP vault_password=$ansible_password cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip connect_with_rdp=yes ansible_user='cyberark.com\$ansible_user' ansible_password=$ansible_password"
               '''
             }
@@ -115,8 +114,7 @@ pipeline {
               sh '''
                 source .testenv/bin/activate
                 VAULT_IP=$(cat /tmp/vault_ip_domain_no.txt)
-                cp -r playbooks/pas-infrastructure/outputs/hosts_domain_no.yml ../inventories/staging/hosts_domain_no.yml
-                cd ..
+                cp -r tests/playbooks/pas-infrastructure/outputs/hosts_domain_no.yml inventories/staging/hosts_domain_no.yml
                 ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_domain_no.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP vault_password=$ansible_password {psm_out_of_domain:true} cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip connect_with_rdp=yes ansible_user='$ansible_user' ansible_password=$ansible_password"
               '''
             }
