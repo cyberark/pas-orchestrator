@@ -37,17 +37,19 @@
 
     - name: Create security group for DC
       ec2_group:
-        name: "PAS-Orchestrator-DC-{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}"
+        name: "PAS-Orchestrator-DC-{{ env_timestamp }}"
         description: Security Group for PAS Orchestrator Domain Controller
         vpc_id: "{{ my_vpc.stdout }}"
         rules:
           - proto: all
             cidr_ip: 0.0.0.0/0
+        tags:
+          Timestamp: "{{ env_timestamp }}"
       register: dc_sg
 
     - name: Create security group for Components
       ec2_group:
-        name: "PAS-Orchestrator-Components-{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}"
+        name: "PAS-Orchestrator-Components-{{ env_timestamp }}"
         description: Security Group for PAS Orchestrator Components
         vpc_id: "{{ my_vpc.stdout }}"
         rules:
@@ -55,6 +57,8 @@
             from_port: 1
             to_port: 65535
             cidr_ip: 0.0.0.0/0
+        tags:
+          Timestamp: "{{ env_timestamp }}"
       register: comp_sg
 
     - name: Get latest windows 2012 ami

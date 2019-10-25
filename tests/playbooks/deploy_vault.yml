@@ -25,7 +25,7 @@
 
     - name: Create security group for Vault
       ec2_group:
-        name: "PAS-Orchestrator-Vault-{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}"
+        name: "PAS-Orchestrator-Vault-{{ env_timestamp }}"
         description: Security Group for PAS Orchestrator Vault
         vpc_id: "{{ my_vpc.stdout }}"
         rules:
@@ -34,6 +34,8 @@
               - 1858
             cidr_ip: 0.0.0.0/0
             rule_desc: Allow all traffic on port 1858
+        tags:
+          Timestamp: "{{ env_timestamp }}"
       register: my_sg
 
     - name: Deploy Vault

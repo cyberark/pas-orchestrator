@@ -18,6 +18,7 @@
       Name: "{{ component_name }}-Machine-{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}"
       Type: "{{ component_name }}"
       Domain: "{{ indomain }}"
+      Timestamp: "{{ env_timestamp }}"
     user_data: "{{ ansible_user_data }}"
     instance_profile_name: "{{ instance_profile | default('') }}"
   register: ec2_instances

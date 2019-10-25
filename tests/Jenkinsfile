@@ -6,7 +6,8 @@ pipeline {
   }
   environment {
     AWS_REGION = sh(script: 'curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | python -c "import json,sys;obj=json.load(sys.stdin);print obj[\'region\']"', returnStdout: true).trim()
-    shortCommit = sh(script: "git log -n 1 --pretty=format:'%h'", returnStdout: true).trim()
+    // shortCommit = sh(script: "git log -n 1 --pretty=format:'%h'", returnStdout: true).trim()
+    ENV_TIMESTAMP = sh(script: "echo $(date +%s)", returnStdout: true).trim()
   }
   stages {
     stage('Install virtual environment') {
@@ -42,7 +43,7 @@ pipeline {
               withCredentials([usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
                 sh '''
                   source .testenv/bin/activate
-                  ansible-playbook tests/playbooks/deploy_vault.yml -v -e "keypair=pcloud-test-instances-KP bucket=sashac ansible_user=$ansible_user ansible_password=$ansible_password domain=yes"
+                  ansible-playbook tests/playbooks/deploy_vault.yml -v -e "keypair=pcloud-test-instances-KP bucket=sashac ansible_user=$ansible_user ansible_password=$ansible_password domain=yes env_timestamp=$ENV_TIMESTAMP"
                 '''
               }
             }
@@ -53,7 +54,7 @@ pipeline {
               withCredentials([usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
                 sh '''
                   source .testenv/bin/activate
-                  ansible-playbook tests/playbooks/deploy_vault.yml -v -e "keypair=pcloud-test-instances-KP bucket=sashac ansible_user=$ansible_user ansible_password=$ansible_password domain=no"
+                  ansible-playbook tests/playbooks/deploy_vault.yml -v -e "keypair=pcloud-test-instances-KP bucket=sashac ansible_user=$ansible_user ansible_password=$ansible_password domain=no env_timestamp=$ENV_TIMESTAMP"
                 '''
               }
             }
@@ -67,7 +68,7 @@ pipeline {
             withCredentials([usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
               sh '''
                 source .testenv/bin/activate
-                ansible-playbook tests/playbooks/pas-infrastructure/ec2-infrastructure.yml -e "aws_region=$AWS_REGION keypair=pcloud-test-instances-KP ec2_instance_type=m4.large public_ip=no pas_count=2 indomain=yes ansible_user=$ansible_user ansible_password=$ansible_password"
+                ansible-playbook tests/playbooks/pas-infrastructure/ec2-infrastructure.yml -e "aws_region=$AWS_REGION keypair=pcloud-test-instances-KP ec2_instance_type=m4.large public_ip=no pas_count=2 indomain=yes ansible_user=$ansible_user ansible_password=$ansible_password env_timestamp=$ENV_TIMESTAMP"
               '''
             }
           }
@@ -78,7 +79,7 @@ pipeline {
             withCredentials([usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
               sh '''
                 source .testenv/bin/activate
-                ansible-playbook tests/playbooks/pas-infrastructure/ec2-infrastructure.yml -e "aws_region=$AWS_REGION keypair=pcloud-test-instances-KP ec2_instance_type=m4.large public_ip=no pas_count=2 indomain=no ansible_user=$ansible_user ansible_password=$ansible_password"
+                ansible-playbook tests/playbooks/pas-infrastructure/ec2-infrastructure.yml -e "aws_region=$AWS_REGION keypair=pcloud-test-instances-KP ec2_instance_type=m4.large public_ip=no pas_count=2 indomain=no ansible_user=$ansible_user ansible_password=$ansible_password env_timestamp=$ENV_TIMESTAMP"
               '''
             }
           }
@@ -128,11 +129,14 @@ pipeline {
   }
   post {
     always {
-      sh '''
-        echo hello
-      '''
       archiveArtifacts artifacts: 'tests/logs/**/*.log', fingerprint: true
       archiveArtifacts artifacts: 'tests/logs/ansible.log', fingerprint: true
+      sh '''
+        aws ec2 terminate-instances --instance-ids $(aws ec2 describe-instances --query 'Reservations[].Instances[].InstanceId' --filters "Name=tag:Timestamp,Values=$ENV_TIMESTAMP" --output text)
+        aws ec2 describe-security-groups --query 'SecurityGroups[*].{ID:GroupId}' --filters --filters "Name=tag:Timestamp,Values=$ENV_TIMESTAMP" --output text | awk '{print $1}' | while read line; do aws ec2 delete-security-group --group-id $line; done
+        aws cloudformation delete-stack --stack-name $(cat /tmp/cf_vault_domain_yes.txt)
+        aws cloudformation delete-stack --stack-name $(cat /tmp/cf_vault_domain_no.txt)
+      '''
     }
   }
 }
