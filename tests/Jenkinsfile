@@ -7,7 +7,7 @@ pipeline {
   environment {
     AWS_REGION = sh(script: 'curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | python -c "import json,sys;obj=json.load(sys.stdin);print obj[\'region\']"', returnStdout: true).trim()
     // shortCommit = sh(script: "git log -n 1 --pretty=format:'%h'", returnStdout: true).trim()
-    ENV_TIMESTAMP = sh(script: "echo $(date +%s)", returnStdout: true).trim()
+    ENV_TIMESTAMP = sh(script: "date +%s", returnStdout: true).trim()
   }
   stages {
     stage('Install virtual environment') {
@@ -130,6 +130,7 @@ pipeline {
   post {
     always {
       archiveArtifacts artifacts: 'tests/logs/**/*.log', fingerprint: true
+      archiveArtifacts artifacts: 'tests/logs/ansible.log', fingerprint: true
       archiveArtifacts artifacts: 'tests/logs/ansible.log', fingerprint: true
       sh '''
         aws ec2 terminate-instances --instance-ids $(aws ec2 describe-instances --query 'Reservations[].Instances[].InstanceId' --filters "Name=tag:Timestamp,Values=$ENV_TIMESTAMP" --output text)
