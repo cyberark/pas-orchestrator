@@ -126,4 +126,13 @@ pipeline {
       }
     }
   }
+  post {
+    always {
+      sh '''
+        echo hello
+      '''
+      archiveArtifacts artifacts: 'tests/logs/**/*.log', fingerprint: true
+      archiveArtifacts artifacts: 'tests/logs/ansible.log', fingerprint: true
+    }
+  }
 }
