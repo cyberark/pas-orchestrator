@@ -139,6 +139,14 @@ pipeline {
         aws ec2 terminate-instances --region $AWS_REGION --instance-ids $instance_ids
         aws ec2 wait instance-terminated --region $AWS_REGION --instance-ids $instance_ids
 
+        instance_ids=$(aws ec2 describe-instances --region $AWS_REGION --query 'Reservations[].Instances[].InstanceId' --filters "Name=tag: aws:cloudformation:stack-name,Values=$(cat /tmp/cf_vault_domain_yes.txt)" --output text)
+        aws ec2 terminate-instances --region $AWS_REGION --instance-ids $instance_ids
+        aws ec2 wait instance-terminated --region $AWS_REGION --instance-ids $instance_ids
+
+        instance_ids=$(aws ec2 describe-instances --region $AWS_REGION --query 'Reservations[].Instances[].InstanceId' --filters "Name=tag: aws:cloudformation:stack-name,Values=$(cat /tmp/cf_vault_domain_no.txt)" --output text)
+        aws ec2 terminate-instances --region $AWS_REGION --instance-ids $instance_ids
+        aws ec2 wait instance-terminated --region $AWS_REGION --instance-ids $instance_ids
+
         # Delete security groups
         aws ec2 describe-security-groups --region $AWS_REGION --query 'SecurityGroups[*].{ID:GroupId}' --filters "Name=tag:Timestamp,Values=$ENV_TIMESTAMP" --output text | awk '{print $1}' | while read line; do aws ec2 delete-security-group --region $AWS_REGION --group-id $line; done
 
