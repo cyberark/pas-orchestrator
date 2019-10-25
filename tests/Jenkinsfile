@@ -127,10 +127,9 @@ pipeline {
       }
     }
   }
-  post('') {
+  post('Archiving artifacts and Cleanup') {
     always {
       archiveArtifacts artifacts: 'tests/logs/**/*.log', fingerprint: true
-      archiveArtifacts artifacts: 'tests/logs/ansible.log', fingerprint: true
       archiveArtifacts artifacts: 'tests/logs/ansible.log', fingerprint: true
       sh '''
         source .testenv/bin/activate
