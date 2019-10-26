@@ -68,7 +68,7 @@ pipeline {
             withCredentials([usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
               sh '''
                 source .testenv/bin/activate
-                ansible-playbook tests/playbooks/pas-infrastructure/ec2-infrastructure.yml -e "aws_region=$AWS_REGION keypair=pcloud-test-instances-KP ec2_instance_type=m4.large public_ip=no pas_count=2 indomain=yes ansible_user=$ansible_user ansible_password=$ansible_password env_timestamp=$ENV_TIMESTAMP"
+                ansible-playbook tests/playbooks/pas-infrastructure/ec2-infrastructure.yml -e "aws_region=$AWS_REGION keypair=pcloud-test-instances-KP ec2_instance_type=m4.large public_ip=no pas_count=1 indomain=yes ansible_user=$ansible_user ansible_password=$ansible_password env_timestamp=$ENV_TIMESTAMP"
               '''
             }
           }
@@ -79,7 +79,7 @@ pipeline {
             withCredentials([usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
               sh '''
                 source .testenv/bin/activate
-                ansible-playbook tests/playbooks/pas-infrastructure/ec2-infrastructure.yml -e "aws_region=$AWS_REGION keypair=pcloud-test-instances-KP ec2_instance_type=m4.large public_ip=no pas_count=2 indomain=no ansible_user=$ansible_user ansible_password=$ansible_password env_timestamp=$ENV_TIMESTAMP"
+                ansible-playbook tests/playbooks/pas-infrastructure/ec2-infrastructure.yml -e "aws_region=$AWS_REGION keypair=pcloud-test-instances-KP ec2_instance_type=m4.large public_ip=no pas_count=1 indomain=no ansible_user=$ansible_user ansible_password=$ansible_password env_timestamp=$ENV_TIMESTAMP"
               '''
             }
           }
