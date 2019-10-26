@@ -155,7 +155,7 @@ pipeline {
 
         # Delete Vault Cloudformations
         status=$(aws cloudformation describe-stacks --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_domain_yes.txt))
-        while [[ $status =~ "does not exist" ]]
+        while $status | grep -q "does not exist"
         do
           aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_domain_yes.txt)
           sleep 120
@@ -163,7 +163,7 @@ pipeline {
         done
 
         status=$(aws cloudformation describe-stacks --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_domain_no.txt))
-        while [[ $status =~ "does not exist" ]]
+        while $status | grep -q "does not exist"
         do
           aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_domain_no.txt)
           sleep 120
