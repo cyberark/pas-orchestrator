@@ -154,21 +154,8 @@ pipeline {
         aws ec2 describe-security-groups --region $AWS_REGION --query 'SecurityGroups[*].{ID:GroupId}' --filters "Name=tag:Timestamp,Values=$ENV_TIMESTAMP" --output text | awk '{print $1}' | while read line; do aws ec2 delete-security-group --region $AWS_REGION --group-id $line; done
 
         # Delete Vault Cloudformations
-        aws cloudformation describe-stacks --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_domain_yes.txt) | grep -q "does not exist"
-        while [[ $? -ne 0 ]]
-        do
-          aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_domain_yes.txt)
-          sleep 120
-          aws cloudformation describe-stacks --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_domain_yes.txt) | grep -q "does not exist"
-        done
-
-        aws cloudformation describe-stacks --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_domain_no.txt) | grep -q "does not exist"
-        while [[ $? -ne 0 ]]
-        do
-          aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_domain_no.txt)
-          sleep 120
-          aws cloudformation describe-stacks --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_domain_no.txt) | grep -q "does not exist"
-        done
+        aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_domain_yes.txt)
+        aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_domain_no.txt)
       '''
     }
   }
