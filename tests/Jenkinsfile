@@ -155,14 +155,14 @@ pipeline {
         while [[ $status =~ "does not exist" ]]
         do
           aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_domain_yes.txt)
-        status=$(aws cloudformation describe-stacks --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_domain_yes.txt))
+          status=$(aws cloudformation describe-stacks --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_domain_yes.txt))
         done
 
         status=$(aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_domain_no.txt))
         while [[ $status =~ "does not exist" ]]
         do
           aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_domain_no.txt)
-        status=$(aws cloudformation describe-stacks --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_domain_no.txt))
+          status=$(aws cloudformation describe-stacks --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_domain_no.txt))
         done
       '''
     }
