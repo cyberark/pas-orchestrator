@@ -1,0 +1,27 @@
+---
+
+- name: Generate EC2 Batch Machines
+  ec2:
+    aws_access_key: "{{ aws_access_key | default(omit) }}"
+    aws_secret_key: "{{ aws_secret_key | default(omit) }}"
+    security_token: "{{ aws_security_token | default(omit) }}"
+    key_name: "{{ keypair }}"
+    instance_type: "{{ ec2_instance_type }}"
+    image: "{{ ami_id }}"
+    wait: yes
+    group_id: "{{ security_group }}"
+    count: "{{ count }}"
+    vpc_subnet_id: "{{ subnet_id }}"
+    assign_public_ip: "{{ public_ip }}"
+    region: "{{ aws_region }}"
+    instance_tags:
+      Name: "{{ component_name }}-Machine-{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}"
+      Type: "{{ component_name }}"
+      Domain: "{{ indomain }}"
+      Timestamp: "{{ env_timestamp }}"
+    user_data: "{{ ansible_user_data }}"
+    instance_profile_name: "{{ instance_profile | default('') }}"
+  register: ec2_instances
+
+- set_fact:
+    ec2_machines: "{{ ec2_instances }}"
