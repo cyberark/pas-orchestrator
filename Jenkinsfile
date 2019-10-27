@@ -7,6 +7,7 @@ pipeline {
   environment {
     AWS_REGION = sh(script: 'curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | python -c "import json,sys;obj=json.load(sys.stdin);print obj[\'region\']"', returnStdout: true).trim()
     // shortCommit = sh(script: "git log -n 1 --pretty=format:'%h'", returnStdout: true).trim()
+    CYBERARK_VERSION = "v11.1"
     ENV_TIMESTAMP = sh(script: "date +%s", returnStdout: true).trim()
   }
   stages {
@@ -109,9 +110,9 @@ pipeline {
             source .testenv/bin/activate
             rm -rf /tmp/packages
             mkdir /tmp/packages
-            aws s3api get-object --bucket $default_s3_bucket --key "Packages/v11.1/Privileged Session Manager-Rls-v11.1.zip" /tmp/packages/psm.zip
-            aws s3api get-object --bucket $default_s3_bucket --key "Packages/v11.1/Central Policy Manager-Rls-v11.1.zip" /tmp/packages/cpm.zip
-            aws s3api get-object --bucket $default_s3_bucket --key "Packages/v11.1/Password Vault Web Access-Rls-v11.1.zip" /tmp/packages/pvwa.zip
+            aws s3api get-object --bucket $default_s3_bucket --key "Packages/$CYBERARK_VERSION/Privileged Session Manager-Rls-$CYBERARK_VERSION.zip" /tmp/packages/psm.zip
+            aws s3api get-object --bucket $default_s3_bucket --key "Packages/$CYBERARK_VERSION/Central Policy Manager-Rls-$CYBERARK_VERSION.zip" /tmp/packages/cpm.zip
+            aws s3api get-object --bucket $default_s3_bucket --key "Packages/$CYBERARK_VERSION/Password Vault Web Access-Rls-$CYBERARK_VERSION.zip" /tmp/packages/pvwa.zip
           '''
         }
       }
