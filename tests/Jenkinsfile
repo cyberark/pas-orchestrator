@@ -47,7 +47,7 @@ pipeline {
               ]) {
                 sh '''
                   source .testenv/bin/activate
-                  ansible-playbook tests/playbooks/deploy_vault.yml -v -e "keypair=$default_keypair bucket=$default_s3_bucet ansible_user=$ansible_user ansible_password=$ansible_password domain=yes env_timestamp=$ENV_TIMESTAMP"
+                  ansible-playbook tests/playbooks/deploy_vault.yml -v -e "keypair=$default_keypair bucket=$default_s3_bucket ansible_user=$ansible_user ansible_password=$ansible_password domain=yes env_timestamp=$ENV_TIMESTAMP"
                 '''
               }
             }
@@ -62,7 +62,7 @@ pipeline {
               ]) {
                 sh '''
                   source .testenv/bin/activate
-                  ansible-playbook tests/playbooks/deploy_vault.yml -v -e "keypair=$default_keypair bucket=$default_s3_bucet ansible_user=$ansible_user ansible_password=$ansible_password domain=no env_timestamp=$ENV_TIMESTAMP"
+                  ansible-playbook tests/playbooks/deploy_vault.yml -v -e "keypair=$default_keypair bucket=$default_s3_bucket ansible_user=$ansible_user ansible_password=$ansible_password domain=no env_timestamp=$ENV_TIMESTAMP"
                 '''
               }
             }
