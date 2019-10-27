@@ -144,7 +144,7 @@ pipeline {
   post('Archiving artifacts and Cleanup') {
     always {
       archiveArtifacts artifacts: 'tests/logs/**/*.log', fingerprint: true
-      archiveArtifacts artifacts: 'tests/logs/ansible.log', fingerprint: true
+      archiveArtifacts artifacts: 'logs/ansible.log', fingerprint: true
     }
     cleanup {
       sh '''
