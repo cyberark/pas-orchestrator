@@ -102,14 +102,18 @@ pipeline {
     }
     stage('Download packages') {
       steps {
-        sh '''
-          source .testenv/bin/activate
-          rm -rf /tmp/packages
-          mkdir /tmp/packages
-          aws s3api get-object --bucket cloud-initiatives-pipeline-bucket --key "Packages/v11.1/Privileged Session Manager-Rls-v11.1.zip" /tmp/packages/psm.zip
-          aws s3api get-object --bucket cloud-initiatives-pipeline-bucket --key "Packages/v11.1/Central Policy Manager-Rls-v11.1.zip" /tmp/packages/cpm.zip
-          aws s3api get-object --bucket cloud-initiatives-pipeline-bucket --key "Packages/v11.1/Password Vault Web Access-Rls-v11.1.zip" /tmp/packages/pvwa.zip
-        '''
+        withCredentials([
+          string(credentialsId: 'default_s3_bucket', variable: 'default_s3_bucket')
+        ]) {
+          sh '''
+            source .testenv/bin/activate
+            rm -rf /tmp/packages
+            mkdir /tmp/packages
+            aws s3api get-object --bucket $default_s3_bucket --key "Packages/v11.1/Privileged Session Manager-Rls-v11.1.zip" /tmp/packages/psm.zip
+            aws s3api get-object --bucket $default_s3_bucket --key "Packages/v11.1/Central Policy Manager-Rls-v11.1.zip" /tmp/packages/cpm.zip
+            aws s3api get-object --bucket $default_s3_bucket --key "Packages/v11.1/Password Vault Web Access-Rls-v11.1.zip" /tmp/packages/pvwa.zip
+          '''
+        }
       }
     }
     stage('Run pas-orchestrator') {
