@@ -40,10 +40,14 @@ pipeline {
       parallel {
         stage('Deploy Vault for in-domain environment') {
             steps {
-              withCredentials([usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
+              withCredentials([
+                usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user'),
+                string(credentialsId: 'default_keypair', variable: 'default_keypair'),
+                string(credentialsId: 'default_s3_bucket', variable: 'default_s3_bucket')
+              ]) {
                 sh '''
                   source .testenv/bin/activate
-                  ansible-playbook tests/playbooks/deploy_vault.yml -v -e "keypair=pcloud-test-instances-KP bucket=sashac ansible_user=$ansible_user ansible_password=$ansible_password domain=yes env_timestamp=$ENV_TIMESTAMP"
+                  ansible-playbook tests/playbooks/deploy_vault.yml -v -e "keypair=$default_keypair bucket=$default_s3_bucet ansible_user=$ansible_user ansible_password=$ansible_password domain=yes env_timestamp=$ENV_TIMESTAMP"
                 '''
               }
             }
@@ -51,10 +55,14 @@ pipeline {
         stage('Deploy Vault for out-of-domain environment') {
             steps {
               sleep 10
-              withCredentials([usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
+              withCredentials([
+                usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user'),
+                string(credentialsId: 'default_keypair', variable: 'default_keypair'),
+                string(credentialsId: 'default_s3_bucket', variable: 'default_s3_bucket')
+              ]) {
                 sh '''
                   source .testenv/bin/activate
-                  ansible-playbook tests/playbooks/deploy_vault.yml -v -e "keypair=pcloud-test-instances-KP bucket=sashac ansible_user=$ansible_user ansible_password=$ansible_password domain=no env_timestamp=$ENV_TIMESTAMP"
+                  ansible-playbook tests/playbooks/deploy_vault.yml -v -e "keypair=$default_keypair bucket=$default_s3_bucet ansible_user=$ansible_user ansible_password=$ansible_password domain=no env_timestamp=$ENV_TIMESTAMP"
                 '''
               }
             }
@@ -65,10 +73,13 @@ pipeline {
       parallel {
         stage('Provision in-domain testing environment') {
           steps {
-            withCredentials([usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
+            withCredentials([
+              usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user'),
+              string(credentialsId: 'default_keypair', variable: 'default_keypair')
+            ]) {
               sh '''
                 source .testenv/bin/activate
-                ansible-playbook tests/playbooks/pas-infrastructure/ec2-infrastructure.yml -e "aws_region=$AWS_REGION keypair=pcloud-test-instances-KP ec2_instance_type=m4.large public_ip=no pas_count=1 indomain=yes ansible_user=$ansible_user ansible_password=$ansible_password env_timestamp=$ENV_TIMESTAMP"
+                ansible-playbook tests/playbooks/pas-infrastructure/ec2-infrastructure.yml -e "aws_region=$AWS_REGION keypair=$default_keypair ec2_instance_type=m4.large public_ip=no pas_count=1 indomain=yes ansible_user=$ansible_user ansible_password=$ansible_password env_timestamp=$ENV_TIMESTAMP"
               '''
             }
           }
@@ -76,10 +87,13 @@ pipeline {
         stage('Provision out-of-domain testing environment') {
           steps {
             sleep 10
-            withCredentials([usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
+            withCredentials([
+              usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user'),
+              string(credentialsId: 'default_keypair', variable: 'default_keypair')
+            ]) {
               sh '''
                 source .testenv/bin/activate
-                ansible-playbook tests/playbooks/pas-infrastructure/ec2-infrastructure.yml -e "aws_region=$AWS_REGION keypair=pcloud-test-instances-KP ec2_instance_type=m4.large public_ip=no pas_count=1 indomain=no ansible_user=$ansible_user ansible_password=$ansible_password env_timestamp=$ENV_TIMESTAMP"
+                ansible-playbook tests/playbooks/pas-infrastructure/ec2-infrastructure.yml -e "aws_region=$AWS_REGION keypair=$default_keypair ec2_instance_type=m4.large public_ip=no pas_count=1 indomain=no ansible_user=$ansible_user ansible_password=$ansible_password env_timestamp=$ENV_TIMESTAMP"
               '''
             }
           }
