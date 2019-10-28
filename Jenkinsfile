@@ -9,6 +9,7 @@ pipeline {
     // shortCommit = sh(script: "git log -n 1 --pretty=format:'%h'", returnStdout: true).trim()
     CYBERARK_VERSION = "v11.1"
     ENV_TIMESTAMP = sh(script: "date +%s", returnStdout: true).trim()
+    BUCKET_REGION= "us-west-2"
   }
   stages {
     stage('Install virtual environment') {
@@ -43,7 +44,7 @@ pipeline {
           string(credentialsId: 'default_s3_bucket', variable: 'default_s3_bucket')
         ]) {
           dir ('/tmp/packages') {
-            withAWS(region:"${env.AWS_REGION}") {
+            withAWS(region:"${env.BUCKET_REGION}") {
               s3Download(file:'/tmp/packages/psm.zip', bucket:"$default_s3_bucket", path:"Privileged Session Manager-Rls-${env.CYBERARK_VERSION}.zip", pathStyleAccessEnabled: true, force:true)
               s3Download(file:'/tmp/packages/cpm.zip', bucket:"$default_s3_bucket", path:"Central Policy Manager-Rls-${env.CYBERARK_VERSION}.zip", pathStyleAccessEnabled: true, force:true)
               s3Download(file:'/tmp/packages/pvwa.zip', bucket:"$default_s3_bucket", path:"Password Vault Web Access-Rls-${env.CYBERARK_VERSION}.zip", pathStyleAccessEnabled: true, force:true)
