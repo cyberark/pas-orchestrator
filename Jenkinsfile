@@ -43,9 +43,9 @@ pipeline {
           string(credentialsId: 'default_s3_bucket', variable: 'default_s3_bucket')
         ]) {
           dir ('/tmp/packages') {
-            s3Download(file:'/tmp/packages/psm.zip', bucket:"$default_s3_bucket", path:"Privileged Session Manager-Rls-$CYBERARK_VERSION.zip", pathStyleAccessEnabled: true, force:true)
-            s3Download(file:'/tmp/packages/cpm.zip', bucket:"$default_s3_bucket", path:"Central Policy Manager-Rls-$CYBERARK_VERSION.zip", pathStyleAccessEnabled: true, force:true)
-            s3Download(file:'/tmp/packages/pvwa.zip', bucket:"$default_s3_bucket", path:"Password Vault Web Access-Rls-$CYBERARK_VERSION.zip", pathStyleAccessEnabled: true, force:true)
+            s3Download(file:'/tmp/packages/psm.zip', bucket:"$default_s3_bucket", path:"Privileged Session Manager-Rls-${env.CYBERARK_VERSION}.zip", pathStyleAccessEnabled: true, force:true)
+            s3Download(file:'/tmp/packages/cpm.zip', bucket:"$default_s3_bucket", path:"Central Policy Manager-Rls-${env.CYBERARK_VERSION}.zip", pathStyleAccessEnabled: true, force:true)
+            s3Download(file:'/tmp/packages/pvwa.zip', bucket:"$default_s3_bucket", path:"Password Vault Web Access-Rls-${env.CYBERARK_VERSION}.zip", pathStyleAccessEnabled: true, force:true)
           }
         }
       }
