@@ -37,6 +37,22 @@ pipeline {
         '''
       }
     }
+    stage('Download packages') {
+      steps {
+        withCredentials([
+          string(credentialsId: 'default_s3_bucket', variable: 'default_s3_bucket')
+        ]) {
+          sh '''
+            source .testenv/bin/activate
+            rm -rf /tmp/packages
+            mkdir /tmp/packages
+            aws s3api get-object --bucket "$default_s3_bucket" --key "Packages/$CYBERARK_VERSION/Privileged Session Manager-Rls-$CYBERARK_VERSION.zip" /tmp/packages/psm.zip
+            aws s3api get-object --bucket "$default_s3_bucket" --key "Packages/$CYBERARK_VERSION/Central Policy Manager-Rls-$CYBERARK_VERSION.zip" /tmp/packages/cpm.zip
+            aws s3api get-object --bucket "$default_s3_bucket" --key "Packages/$CYBERARK_VERSION/Password Vault Web Access-Rls-$CYBERARK_VERSION.zip" /tmp/packages/pvwa.zip
+          '''
+        }
+      }
+    }
     stage('Deploy Vaults') {
       parallel {
         stage('Deploy Vault for in-domain environment') {
@@ -98,22 +114,6 @@ pipeline {
               '''
             }
           }
-        }
-      }
-    }
-    stage('Download packages') {
-      steps {
-        withCredentials([
-          string(credentialsId: 'default_s3_bucket', variable: 'default_s3_bucket')
-        ]) {
-          sh '''
-            source .testenv/bin/activate
-            rm -rf /tmp/packages
-            mkdir /tmp/packages
-            aws s3api get-object --bucket $default_s3_bucket --key "Packages/$CYBERARK_VERSION/Privileged Session Manager-Rls-$CYBERARK_VERSION.zip" /tmp/packages/psm.zip
-            aws s3api get-object --bucket $default_s3_bucket --key "Packages/$CYBERARK_VERSION/Central Policy Manager-Rls-$CYBERARK_VERSION.zip" /tmp/packages/cpm.zip
-            aws s3api get-object --bucket $default_s3_bucket --key "Packages/$CYBERARK_VERSION/Password Vault Web Access-Rls-$CYBERARK_VERSION.zip" /tmp/packages/pvwa.zip
-          '''
         }
       }
     }
