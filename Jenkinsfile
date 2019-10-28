@@ -42,15 +42,11 @@ pipeline {
         withCredentials([
           string(credentialsId: 'default_s3_bucket', variable: 'default_s3_bucket')
         ]) {
-          sh '''
-            echo $default_s3_bucket
-            source .testenv/bin/activate
-            rm -rf /tmp/packages
-            mkdir /tmp/packages
-            aws s3api get-object --bucket "$default_s3_bucket" --key "Packages/$CYBERARK_VERSION/Privileged Session Manager-Rls-$CYBERARK_VERSION.zip" /tmp/packages/psm.zip
-            aws s3api get-object --bucket "$default_s3_bucket" --key "Packages/$CYBERARK_VERSION/Central Policy Manager-Rls-$CYBERARK_VERSION.zip" /tmp/packages/cpm.zip
-            aws s3api get-object --bucket "$default_s3_bucket" --key "Packages/$CYBERARK_VERSION/Password Vault Web Access-Rls-$CYBERARK_VERSION.zip" /tmp/packages/pvwa.zip
-          '''
+          dir ('/tmp/packages') {
+            s3Download(pathStyleAccessEnabled: true, file:'/tmp/packages/psm.zip', bucket:'$default_s3_bucket', path:'Privileged Session Manager-Rls-$CYBERARK_VERSION.zip', force:true)
+            s3Download(pathStyleAccessEnabled: true, file:'/tmp/packages/cpm.zip', bucket:'$default_s3_bucket', path:'Central Policy Manager-Rls-$CYBERARK_VERSION.zip', force:true)
+            s3Download(pathStyleAccessEnabled: true, file:'/tmp/packages/pvwa.zip', bucket:'$default_s3_bucket', path:'Password Vault Web Access-Rls-$CYBERARK_VERSION.zip', force:true)
+          }
         }
       }
     }
