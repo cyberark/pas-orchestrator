@@ -9,7 +9,6 @@ pipeline {
     // shortCommit = sh(script: "git log -n 1 --pretty=format:'%h'", returnStdout: true).trim()
     CYBERARK_VERSION = "v11.1"
     ENV_TIMESTAMP = sh(script: "date +%s", returnStdout: true).trim()
-    BUCKET_REGION= "us-west-2"
   }
   stages {
     stage('Install virtual environment') {
