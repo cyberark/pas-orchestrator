@@ -1,4 +1,4 @@
-ansible==2.7.10
+ansible==2.7.12
 ansible-lint==4.1.0
 asn1crypto==0.24.0
 awscli==1.16.265
