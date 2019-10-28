@@ -43,6 +43,7 @@ pipeline {
           string(credentialsId: 'default_s3_bucket', variable: 'default_s3_bucket')
         ]) {
           sh '''
+            echo $default_s3_bucket
             source .testenv/bin/activate
             rm -rf /tmp/packages
             mkdir /tmp/packages
