@@ -1,0 +1,81 @@
+---
+
+- hosts: localhost
+  gather_facts: no
+  tasks:
+
+    - name: Get current region
+      shell: |
+        echo $AWS_REGION
+      register: my_region
+
+    - name: Get current vpc id
+      shell: |
+        INTERFACE=$(curl --silent http://169.254.169.254/latest/meta-data/network/interfaces/macs/)
+        VPC_ID=$(curl --silent http://169.254.169.254/latest/meta-data/network/interfaces/macs/${INTERFACE}/vpc-id)
+        echo $VPC_ID
+      register: my_vpc
+
+    - name: Get current subnet id
+      shell: |
+        INTERFACE=$(curl --silent http://169.254.169.254/latest/meta-data/network/interfaces/macs/)
+        SUBNET_ID=$(curl --silent http://169.254.169.254/latest/meta-data/network/interfaces/macs/${INTERFACE}/subnet-id)
+        echo $SUBNET_ID
+      register: my_subnet
+
+    - name: Create security group for Vault
+      ec2_group:
+        name: "PAS-Orchestrator-Vault-{{ env_timestamp }}"
+        description: Security Group for PAS Orchestrator Vault
+        vpc_id: "{{ my_vpc.stdout }}"
+        rules:
+          - proto: tcp
+            ports:
+              - 1858
+            cidr_ip: 0.0.0.0/0
+            rule_desc: Allow all traffic on port 1858
+        tags:
+          Timestamp: "{{ env_timestamp }}"
+      register: my_sg
+
+    - name: Deploy Vault
+      include_role:
+        name: cf_deploy
+      vars:
+        - deploy_bucket: cloud-initiatives-pipeline-bucket
+        - cf_template_url: https://raw.githubusercontent.com/cyberark/pas-on-cloud/master/aws/Vault-Single-Deployment.json
+        - cf_template_parameters:
+            EULA: Accept
+            KeyName: "{{ keypair }}"
+            VaultFilesBucket: "{{ bucket }}"
+            LicenseFile: license.xml
+            RecoveryPublicKey: recpub.key
+            VaultAdminPassword: "{{ ansible_password }}"
+            RetypeAdminPassword: "{{ ansible_password }}"
+            VaultMasterPassword: "{{ ansible_password }}"
+            RetypeMasterPassword: "{{ ansible_password }}"
+            VaultInstanceName: "[PAS-Orchestrator] Vault"
+            VaultHostName: vault
+            VaultInstanceType: m4.large
+            VaultInstanceSecurityGroups: "{{ my_sg.group_id }}"
+            VaultInstanceSubnetId: "{{ my_subnet.stdout }}"
+        - aws_region: "{{ my_region.stdout }}"
+
+    - name: Get Vault machine details from CloudFormation
+      ec2_instance_facts:
+        region: "{{ my_region.stdout }}"
+        instance_ids:
+          - "{{ cf_output | json_query('[?logical_resource_id == `VaultMachine` ] | [0].physical_resource_id') }}"
+      register: vault_machine
+
+    - name: Save Vault ip address in text file
+      copy:
+        dest: "/tmp/vault_ip_domain_{{ domain }}.txt"
+        content: |
+          {{ vault_machine.instances[0].private_ip_address }}
+
+    - name: Save cloudformation id for later cleanup
+      copy:
+        dest: "/tmp/cf_vault_domain_{{ domain }}.txt"
+        content: |
+          {{ cloudformation_stack_id }}
