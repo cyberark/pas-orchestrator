@@ -227,10 +227,14 @@
   connection: local
   tasks:
 
-    - name: Copy Inventory Files to Outputs Fodler
-      synchronize:
-        src: inventory/
-        dest: outputs/
+    - name: Copy EC2 py files to Outputs Fodler
+      copy:
+        src: "inventory/{{ item }}"
+        dest: "outputs/{{ item }}"
+        remote_src: yes
+      with_items:
+        - ec2.py
+        - ec2.ini
 
     - name: Make ec2.py executable
       file:
