@@ -38,9 +38,10 @@ demonstrating paralel installation on multiple remote servers
 
 ## Environment setup
 
-- Get the PAS Orchestrator Role
+- Get the PAS Orchestrator Playbook
     ```
     git clone https://github.com/cyberark/pas-orchestrator.git
+    cd pas-orchestrator
     ```
 - Install Python requirements
     ```
@@ -48,7 +49,6 @@ demonstrating paralel installation on multiple remote servers
     ```
 - Get the components roles
     ```
-    cd pas-orchestrator
     ansible-galaxy install --roles-path ./roles --role-file requirements.yml
     ```
 - Update the inventories hosts file with the remote hosts IPs
