@@ -7,6 +7,7 @@ futures==3.3.0
 jmespath==0.9.4
 jq==0.1.6
 json2yaml==1.1.1
+pathspec==0.6.0
 pyaml==19.4.1
 pyasn1==0.4.7
 python-dateutil==2.8.0
@@ -16,4 +17,5 @@ s3transfer==0.2.1
 six==1.12.0
 urllib3==1.25.6
 xmltodict==0.12.0
+yamllint==1.18.0
 yq==2.8.1
