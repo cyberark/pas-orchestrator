@@ -1,4 +1,4 @@
- # PAS-Orchestrator
+# PAS-Orchestrator
 
 In today’s modern infrastructure, organizations are moving towards hybrid environments, which consist of multiple public clouds, private clouds and on-premises platforms.
 
@@ -24,7 +24,6 @@ The PAS Orchestrator role is an example of how to use the component roles
 demonstrating paralel installation on multiple remote servers
 
 ## Requirements
-------------
 
 - IP addresses / hosts to execute the playbook against with Windows 2016 installed on the remote hosts
 - WinRM open on port 5986 (**not 5985**) on the remote host
@@ -38,7 +37,7 @@ demonstrating paralel installation on multiple remote servers
 - CyberArk components CD image on the workstation running the playbook
 
 ## Environment setup
-------------
+
 - Get the PAS Orchestrator Role
     ```
     git clone https://github.com/cyberark/pas-orchestrator.git
@@ -144,11 +143,12 @@ Command example for out of Domain , no hardening deployment in drive D:
  ** *Vault and remote host passwords are entered via Prompt*
 
 ## Troubleshooting
- In case of a failure, a Log folder with be created on the Ansible workstation with the relevant logs copied from the remote host machine.
- The logs are available under  - pas-orchestrator/tasks/logs
+
+In case of a failure, a Log folder with be created on the Ansible workstation with the relevant logs copied from the remote host machine.
+The logs are available under  - pas-orchestrator/tasks/logs
 
 ## Idempotence
- Every stage in the roles contains validation and can be run multiple times without error.
+Every stage in the roles contains validation and can be run multiple times without error.
 
 ## Limitations
 - Only single component per server is supported
