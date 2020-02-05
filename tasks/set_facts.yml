@@ -10,3 +10,4 @@
     cpm_zip_file_path: "{{ cpm_zip_file_path }}"
     pvwa_zip_file_path: "{{ pvwa_zip_file_path }}"
     psm_zip_file_path: "{{ psm_zip_file_path }}"
+  no_log: true
