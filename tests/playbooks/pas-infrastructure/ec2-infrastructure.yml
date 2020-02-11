@@ -243,7 +243,7 @@
 
     - name: Change the domain placeholder on ec2.ini
       shell: |
-        sed -i -- 's/domain_placeholder/{{ indomain }}/g' outputs/ec2.ini
+        sed -i -- 's/tc_number_placeholder/tc_{{ tc_number }}/g' outputs/ec2.ini
 
     - name: Get Dynamic Inventory
       shell: |
@@ -251,13 +251,13 @@
       register: inventory
 
     - name: Convert Inventory JSON to YAML
-      command: "json2yaml outputs/hosts.json outputs/hosts_domain_{{ indomain }}.yml"
+      command: "json2yaml outputs/hosts.json outputs/hosts_tc_{{ tc_number }}.yml"
 
     - name: Remove Empty Objects
-      command: "sed -i -- 's/ {}//g' outputs/hosts_domain_{{ indomain }}.yml"
+      command: "sed -i -- 's/ {}//g' outputs/hosts_tc_{{ tc_number }}.yml"
 
     - name: Remove tag_Type_ string
-      command: "sed -i -- 's/tag_Type_//g' outputs/hosts_domain_{{ indomain }}.yml"
+      command: "sed -i -- 's/tag_Type_//g' outputs/hosts_tc_{{ tc_number }}.yml"
 
     - name: Remove Leftovers from Outputs Folder
       file:
