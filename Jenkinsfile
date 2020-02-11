@@ -258,15 +258,23 @@ pipeline {
         aws ec2 terminate-instances --region $AWS_REGION --instance-ids $instance_ids
         aws ec2 wait instance-terminated --region $AWS_REGION --instance-ids $instance_ids
 
-        instance_ids=$(aws ec2 describe-instances --region $AWS_REGION --query 'Reservations[].Instances[].InstanceId' --filters "Name=tag:aws:cloudformation:stack-name,Values=$(cat /tmp/cf_vault_domain_tc_1.txt)" --output text)
+        instance_ids=$(aws ec2 describe-instances --region $AWS_REGION --query 'Reservations[].Instances[].InstanceId' --filters "Name=tag:aws:cloudformation:stack-name,Values=$(cat /tmp/cf_vault_tc_1.txt)" --output text)
         aws ec2 terminate-instances --region $AWS_REGION --instance-ids $instance_ids
         aws ec2 wait instance-terminated --region $AWS_REGION --instance-ids $instance_ids
 
-        instance_ids=$(aws ec2 describe-instances --region $AWS_REGION --query 'Reservations[].Instances[].InstanceId' --filters "Name=tag:aws:cloudformation:stack-name,Values=$(cat /tmp/cf_vault_domain_tc_2.txt)" --output text)
+        instance_ids=$(aws ec2 describe-instances --region $AWS_REGION --query 'Reservations[].Instances[].InstanceId' --filters "Name=tag:aws:cloudformation:stack-name,Values=$(cat /tmp/cf_vault_tc_2.txt)" --output text)
         aws ec2 terminate-instances --region $AWS_REGION --instance-ids $instance_ids
         aws ec2 wait instance-terminated --region $AWS_REGION --instance-ids $instance_ids
 
-        instance_ids=$(aws ec2 describe-instances --region $AWS_REGION --query 'Reservations[].Instances[].InstanceId' --filters "Name=tag:aws:cloudformation:stack-name,Values=$(cat /tmp/cf_vault_domain_tc_3.txt)" --output text)
+        instance_ids=$(aws ec2 describe-instances --region $AWS_REGION --query 'Reservations[].Instances[].InstanceId' --filters "Name=tag:aws:cloudformation:stack-name,Values=$(cat /tmp/cf_vaultdr_tc_2.txt)" --output text)
+        aws ec2 terminate-instances --region $AWS_REGION --instance-ids $instance_ids
+        aws ec2 wait instance-terminated --region $AWS_REGION --instance-ids $instance_ids
+
+        instance_ids=$(aws ec2 describe-instances --region $AWS_REGION --query 'Reservations[].Instances[].InstanceId' --filters "Name=tag:aws:cloudformation:stack-name,Values=$(cat /tmp/cf_vault_tc_3.txt)" --output text)
+        aws ec2 terminate-instances --region $AWS_REGION --instance-ids $instance_ids
+        aws ec2 wait instance-terminated --region $AWS_REGION --instance-ids $instance_ids
+
+        instance_ids=$(aws ec2 describe-instances --region $AWS_REGION --query 'Reservations[].Instances[].InstanceId' --filters "Name=tag:aws:cloudformation:stack-name,Values=$(cat /tmp/cf_vaultdr_tc_3.txt)" --output text)
         aws ec2 terminate-instances --region $AWS_REGION --instance-ids $instance_ids
         aws ec2 wait instance-terminated --region $AWS_REGION --instance-ids $instance_ids
 
