@@ -15,7 +15,7 @@ pipeline {
       steps {
         sh '''
             python -m pip install --user virtualenv
-            python -m virtualenv --no-site-packages .testenv
+            python -m virtualenv .testenv
             source .testenv/bin/activate
             pip install -r requirements.txt
             pip install -r tests/requirements.txt
