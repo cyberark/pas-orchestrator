@@ -276,10 +276,10 @@ pipeline {
 
         # Delete Vault Cloudformations
         aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_tc_1.txt)
-        aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_tc_2.txt)
         aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vaultdr_tc_2.txt)
-        aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_tc_3.txt)
+        aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_tc_2.txt)
         aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vaultdr_tc_3.txt)
+        aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_tc_3.txt)
       '''
     }
   }
