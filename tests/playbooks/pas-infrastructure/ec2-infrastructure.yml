@@ -188,6 +188,10 @@
 
   tasks:
 
+    - name: Wait for PAS Machines to Respond
+      wait_for_connection:
+        timeout: 600
+
     - name: Copy diskpart script
       win_copy:
         src: files/diskpart.txt
@@ -199,10 +203,6 @@
       args:
         chdir: C:\
       ignore_errors: true
-
-    - name: Wait for PAS Machines to Respond
-      wait_for_connection:
-        timeout: 600
 
     - name: Set DNS on IPV4 Adapter to DC
       win_dns_client:
