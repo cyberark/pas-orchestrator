@@ -243,7 +243,7 @@
 
     - name: Change the domain placeholder on ec2.ini
       shell: |
-        sed -i -- 's/tc_number_placeholder/tc_{{ tc_number }}/g' outputs/ec2.ini
+        sed -i -- 's/tc_number_placeholder/{{ tc_number }}/g' outputs/ec2.ini
 
     - name: Get Dynamic Inventory
       shell: |

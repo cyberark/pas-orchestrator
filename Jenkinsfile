@@ -53,7 +53,7 @@ pipeline {
     }
     stage('Deploy Environments') {
       parallel {
-        stage('Deploy Environment for TC 1') {
+        stage('Deploy Environment for TC1') {
           stages {
             stage('Deploy Vault') {
               steps {
@@ -108,7 +108,7 @@ pipeline {
             }
           }
         }
-        stage('Deploy Environment for TC 2') {
+        stage('Deploy Environment for TC2') {
           stages {
             stage('Deploy Vault') {
               steps {
@@ -161,7 +161,7 @@ pipeline {
                     VAULT_IP=$(cat /tmp/vault_ip_tc_2.txt)
                     VAULT_DR_IP=$(cat /tmp/vaultdr_ip_tc_2.txt)
                     cp -r tests/playbooks/pas-infrastructure/outputs/hosts_tc_2.yml inventories/staging/hosts_tc_2.yml
-                    ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_tc_2.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP vaultdr_ip=$VAULT_DR_IP vault_password=$ansible_password cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip connect_with_rdp=yes ansible_user='cyberark.com\\\\$ansible_user' ansible_password=$ansible_password"
+                    ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_tc_2.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP dr_vault_ip=$VAULT_DR_IP vault_password=$ansible_password pvwa_installation_drive=\'D:\' cpm_installation_drive=\'D:' psm_installation_drive=\'D:\' cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip connect_with_rdp=yes ansible_user='cyberark.com\\\\$ansible_user' ansible_password=$ansible_password"
                   '''
                 }
               }
@@ -174,14 +174,14 @@ pipeline {
                     VAULT_IP=$(cat /tmp/vault_ip_tc_2.txt)
                     VAULT_DR_IP=$(cat /tmp/vaultdr_ip_tc_2.txt)
                     cp -r tests/playbooks/pas-infrastructure/outputs/hosts_tc_2.yml inventories/staging/hosts_tc_2.yml
-                    ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_tc_2.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP vaultdr_ip=$VAULT_DR_IP vault_password=$ansible_password cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip connect_with_rdp=yes ansible_user='cyberark.com\\\\$ansible_user' ansible_password=$ansible_password"
+                    ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_tc_2.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP dr_vault_ip=$VAULT_DR_IP vault_password=$ansible_password pvwa_installation_drive=\'D:\' cpm_installation_drive=\'D:' psm_installation_drive=\'D:\' cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip connect_with_rdp=yes ansible_user='cyberark.com\\\\$ansible_user' ansible_password=$ansible_password"
                   '''
                 }
               }
             }
           }
         }
-        stage('Deploy Environment for TC 3') {
+        stage('Deploy Environment for TC3') {
           stages {
             stage('Deploy Vault') {
               steps {
@@ -234,7 +234,7 @@ pipeline {
                     VAULT_IP=$(cat /tmp/vault_ip_tc_3.txt)
                     VAULT_DR_IP=$(cat /tmp/vaultdr_ip_tc_3.txt)
                     cp -r tests/playbooks/pas-infrastructure/outputs/hosts_tc_3.yml inventories/staging/hosts_tc_3.yml
-                    ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_tc_3.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP vaultdr_ip=$VAULT_DR_IP vault_password=$ansible_password {pvwa_hardening:false} {cpm_hardening:false} {psm_hardening:false} {psm_out_of_domain:true} cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip connect_with_rdp=yes ansible_user='$ansible_user' ansible_password=$ansible_password"
+                    ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_tc_3.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP dr_vault_ip=$VAULT_DR_IP vault_password=$ansible_password {pvwa_hardening:false} {cpm_hardening:false} {psm_hardening:false} {psm_out_of_domain:true} cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip connect_with_rdp=yes ansible_user='$ansible_user' ansible_password=$ansible_password"
                   '''
                 }
               }
