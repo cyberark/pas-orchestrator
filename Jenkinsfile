@@ -246,6 +246,7 @@ pipeline {
   }
   post('Archiving artifacts and Cleanup') {
     always {
+      archiveArtifacts artifacts: 'inventories/staging/hosts_tc_*.yml'
       archiveArtifacts artifacts: 'logs/**/*.log', fingerprint: true
       archiveArtifacts artifacts: 'logs/ansible.log', fingerprint: true
     }
