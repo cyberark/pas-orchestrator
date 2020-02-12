@@ -188,6 +188,18 @@
 
   tasks:
 
+    - name: Copy diskpart script
+      win_copy:
+        src: files/diskpart.txt
+        dest: C:\
+
+    - name: Bring D drive online
+      win_shell: |
+        diskpart /s diskpart.txt
+      args:
+        chdir: C:\
+      ignore_errors: true
+
     - name: Wait for PAS Machines to Respond
       wait_for_connection:
         timeout: 600
