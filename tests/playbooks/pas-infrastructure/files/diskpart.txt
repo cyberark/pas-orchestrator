@@ -1,0 +1,7 @@
+select disk 1
+attributes disk clear readonly
+online disk
+convert mbr
+create partition primary
+format quick fs=ntfs label="Alternate"
+assign letter="D"

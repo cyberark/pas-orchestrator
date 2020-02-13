@@ -25,8 +25,8 @@
 
     - name: Create security group for Vault
       ec2_group:
-        name: "PAS-Orchestrator-Vault-{{ env_timestamp }}"
-        description: Security Group for PAS Orchestrator Vault
+        name: "PAS-Orchestrator-DRVault-{{ env_timestamp }}"
+        description: Security Group for PAS Orchestrator DRVault
         vpc_id: "{{ my_vpc.stdout }}"
         rules:
           - proto: tcp
@@ -43,39 +43,41 @@
         name: cf_deploy
       vars:
         - deploy_bucket: cloud-initiatives-pipeline-bucket
-        - cf_template_url: https://raw.githubusercontent.com/cyberark/pas-on-cloud/master/aws/Vault-Single-Deployment.json
+        - cf_template_url: https://raw.githubusercontent.com/cyberark/pas-on-cloud/master/aws/DRVault-Single-Deployment.json
         - cf_template_parameters:
             EULA: Accept
             KeyName: "{{ keypair }}"
             VaultFilesBucket: "{{ bucket }}"
             LicenseFile: license.xml
             RecoveryPublicKey: recpub.key
+            VaultPrivateIP: "{{ vault_ip }}"
             VaultAdminPassword: "{{ ansible_password }}"
-            RetypeAdminPassword: "{{ ansible_password }}"
+            VaultDRPassword: "{{ ansible_password }}"
+            RetypeDRPassword: "{{ ansible_password }}"
             VaultMasterPassword: "{{ ansible_password }}"
             RetypeMasterPassword: "{{ ansible_password }}"
-            VaultInstanceName: "[PAS-Orchestrator] Vault"
+            VaultInstanceName: "[PAS-Orchestrator] DRVault"
             VaultHostName: vault
             VaultInstanceType: m4.large
             VaultInstanceSecurityGroups: "{{ my_sg.group_id }}"
-            VaultInstanceSubnetId: "{{ my_subnet.stdout }}"
+            DRInstanceSubnetId: "{{ my_subnet.stdout }}"
         - aws_region: "{{ my_region.stdout }}"
 
     - name: Get Vault machine details from CloudFormation
       ec2_instance_facts:
         region: "{{ my_region.stdout }}"
         instance_ids:
-          - "{{ cf_output | json_query('[?logical_resource_id == `VaultMachine` ] | [0].physical_resource_id') }}"
-      register: vault_machine
+          - "{{ cf_output | json_query('[?logical_resource_id == `VaultDRMachine` ] | [0].physical_resource_id') }}"
+      register: vaultdr_machine
 
     - name: Save Vault ip address in text file
       copy:
-        dest: "/tmp/vault_ip_tc_{{ tc_number }}.txt"
+        dest: "/tmp/vaultdr_ip_tc_{{ tc_number }}.txt"
         content: |
-          {{ vault_machine.instances[0].private_ip_address }}
+          {{ vaultdr_machine.instances[0].private_ip_address }}
 
     - name: Save cloudformation id for later cleanup
       copy:
-        dest: "/tmp/cf_vault_tc_{{ tc_number }}.txt"
+        dest: "/tmp/cf_vaultdr_tc_{{ tc_number }}.txt"
         content: |
           {{ cloudformation_stack_id }}

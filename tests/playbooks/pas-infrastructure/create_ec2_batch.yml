@@ -14,10 +14,18 @@
     vpc_subnet_id: "{{ subnet_id }}"
     assign_public_ip: "{{ public_ip }}"
     region: "{{ aws_region }}"
+    volumes:
+      - device_name: /dev/sda1
+        volume_type: gp2
+        volume_size: 30
+      - device_name: /dev/sda2
+        volume_type: gp2
+        volume_size: 30
     instance_tags:
       Name: "{{ component_name }}-Machine-{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}"
       Type: "{{ component_name }}"
       Domain: "{{ indomain }}"
+      TC_Number: "{{ tc_number }}"
       Timestamp: "{{ env_timestamp }}"
     user_data: "{{ ansible_user_data }}"
     instance_profile_name: "{{ instance_profile | default('') }}"
