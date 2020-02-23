@@ -8,7 +8,7 @@
 # cpm git repo
 - src: https://github.com/cyberark/cpm.git
   scm: git
-  version: v11.2
+  version: feature/win_xml
 
 # psm git repo
 - src: https://github.com/cyberark/psm.git
