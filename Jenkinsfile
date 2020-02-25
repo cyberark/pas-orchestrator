@@ -7,7 +7,7 @@ pipeline {
   environment {
     AWS_REGION = sh(script: 'curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | python -c "import json,sys;obj=json.load(sys.stdin);print obj[\'region\']"', returnStdout: true).trim()
     // shortCommit = sh(script: "git log -n 1 --pretty=format:'%h'", returnStdout: true).trim()
-    CYBERARK_VERSION = "v11.2"
+    CYBERARK_VERSION = "v11.3"
     ENV_TIMESTAMP = sh(script: "date +%s", returnStdout: true).trim()
   }
   stages {
@@ -82,6 +82,22 @@ pipeline {
                 }
               }
             }
+            stage('Run pas-orchestrator in-domain #0 failure (TC5)') {
+              steps {
+                withCredentials([usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
+                  sh '''
+                    source .testenv/bin/activate
+                    VAULT_IP=$(cat /tmp/vault_ip_tc_1.txt)
+                    cp -r tests/playbooks/pas-infrastructure/outputs/hosts_tc_1.yml inventories/staging/hosts_tc_1.yml
+                  '''
+                  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    sh '''
+                      ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_tc_1.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP vault_password='blahblah' cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip connect_with_rdp=Yes ansible_user='cyberark.com\\\\$ansible_user' ansible_password=$ansible_password"
+                    '''
+                  }
+                }
+              }
+            }
             stage('Run pas-orchestrator in-domain #1') {
               steps {
                 withCredentials([usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
@@ -89,7 +105,7 @@ pipeline {
                     source .testenv/bin/activate
                     VAULT_IP=$(cat /tmp/vault_ip_tc_1.txt)
                     cp -r tests/playbooks/pas-infrastructure/outputs/hosts_tc_1.yml inventories/staging/hosts_tc_1.yml
-                    ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_tc_1.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP vault_password=$ansible_password cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip connect_with_rdp=Yes ansible_user='cyberark.com\\\\$ansible_user' ansible_password=$ansible_password"
+                    ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_tc_1.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP vault_password=$ansible_password {psm_hardening:false} cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip connect_with_rdp=Yes ansible_user='cyberark.com\\\\$ansible_user' ansible_password=$ansible_password"
                   '''
                 }
               }
@@ -101,7 +117,7 @@ pipeline {
                     source .testenv/bin/activate
                     VAULT_IP=$(cat /tmp/vault_ip_tc_1.txt)
                     cp -r tests/playbooks/pas-infrastructure/outputs/hosts_tc_1.yml inventories/staging/hosts_tc_1.yml
-                    ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_tc_1.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP vault_password=$ansible_password cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip connect_with_rdp=Yes ansible_user='cyberark.com\\\\$ansible_user' ansible_password=$ansible_password"
+                    ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_tc_1.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP vault_password=$ansible_password {psm_hardening:false} cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip connect_with_rdp=Yes ansible_user='cyberark.com\\\\$ansible_user' ansible_password=$ansible_password"
                   '''
                 }
               }
