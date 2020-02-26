@@ -92,6 +92,7 @@ pipeline {
                   '''
                   catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     sh '''
+                      source .testenv/bin/activate
                       ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_tc_1.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP vault_password='blahblah' cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip connect_with_rdp=Yes ansible_user='cyberark.com\\\\$ansible_user' ansible_password=$ansible_password"
                     '''
                   }
