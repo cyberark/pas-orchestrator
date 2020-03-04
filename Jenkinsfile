@@ -106,7 +106,7 @@ pipeline {
                     source .testenv/bin/activate
                     VAULT_IP=$(cat /tmp/vault_ip_tc_1.txt)
                     cp -r tests/playbooks/pas-infrastructure/outputs/hosts_tc_1.yml inventories/staging/hosts_tc_1.yml
-                    ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_tc_1.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP vault_password=$ansible_password {psm_hardening:false} cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip connect_with_rdp=Yes ansible_user='cyberark.com\\\\$ansible_user' ansible_password=$ansible_password"
+                    ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_tc_1.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP vault_password=$ansible_password psm_hardening=false cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip connect_with_rdp=Yes ansible_user='cyberark.com\\\\$ansible_user' ansible_password=$ansible_password"
                   '''
                 }
               }
@@ -118,7 +118,7 @@ pipeline {
                     source .testenv/bin/activate
                     VAULT_IP=$(cat /tmp/vault_ip_tc_1.txt)
                     cp -r tests/playbooks/pas-infrastructure/outputs/hosts_tc_1.yml inventories/staging/hosts_tc_1.yml
-                    ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_tc_1.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP vault_password=$ansible_password {psm_hardening:false} cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip connect_with_rdp=Yes ansible_user='cyberark.com\\\\$ansible_user' ansible_password=$ansible_password"
+                    ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_tc_1.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP vault_password=$ansible_password psm_hardening=false cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip connect_with_rdp=Yes ansible_user='cyberark.com\\\\$ansible_user' ansible_password=$ansible_password"
                   '''
                 }
               }
@@ -251,7 +251,7 @@ pipeline {
                     VAULT_IP=$(cat /tmp/vault_ip_tc_3.txt)
                     VAULT_DR_IP=$(cat /tmp/vaultdr_ip_tc_3.txt)
                     cp -r tests/playbooks/pas-infrastructure/outputs/hosts_tc_3.yml inventories/staging/hosts_tc_3.yml
-                    ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_tc_3.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP dr_vault_ip=$VAULT_DR_IP vault_password=$ansible_password {pvwa_hardening:false} {cpm_hardening:false} {psm_hardening:false} {psm_out_of_domain:true} cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip connect_with_rdp=Yes ansible_user='$ansible_user' ansible_password=$ansible_password"
+                    ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_tc_3.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP dr_vault_ip=$VAULT_DR_IP vault_password=$ansible_password pvwa_hardening=false cpm_hardening=false psm_hardening=false psm_out_of_domain=true cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip connect_with_rdp=Yes ansible_user='$ansible_user' ansible_password=$ansible_password"
                   '''
                 }
               }
