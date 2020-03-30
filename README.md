@@ -15,8 +15,9 @@ Each PAS component’s Ansible role is responsible for the component end-2-end d
 - Post installation procedure and hardening
 - Registration in the Vault
 
-Ansible Roles for PVWA, CPM and PSM can be found in the following links:
+Ansible Roles for PVWA, CPM, PSM and PSMP can be found in the following links:
  - PSM: [https://github.com/cyberark/psm](https://github.com/cyberark/psm)
+ - PSMP: [https://github.com/dviryamin/psmp](https://github.com/dviryamin/psmp)
  - CPM: [https://github.com/cyberark/cpm](https://github.com/cyberark/cpm)
  - PVWA: [https://github.com/cyberark/pvwa](https://github.com/cyberark/pvwa)
 
@@ -70,6 +71,7 @@ These are the variables used in this playbook
 | cpm_zip_file_path                | yes          | None                                                                           | Path to zipped CPM image                 |
 | pvwa_zip_file_path               | yes          | None                                                                           | Path to zipped PVWA image                |
 | psm_zip_file_path                | yes          | None                                                                           | Path to zipped PSM image                 |
+| psmp_zip_file_path                | yes          | None                                                                           | Path to zipped PSMP image                 |
 
 Variables related to the components can be found on the Components README
 
@@ -134,7 +136,7 @@ Prior to running pas-orchestrator hosts file should be "updated" [https://github
 
  To run the above playbook, execute the following command example :
 
-    ansible-playbook -i ./inventories/production pas-orchestrator.yml -e "vault_ip=VAULT_IP ansible_user=DOMAIN\USER cpm_zip_file_path=/tmp/pas_packages/cpm.zip pvwa_zip_file_path=/tmp/pas_packages/pvwa.zip psm_zip_file_path=/tmp/pas_packages/psm.zip  connect_with_rdp=Yes accept_eula=Yes"
+    ansible-playbook -i ./inventories/production pas-orchestrator.yml -e "vault_ip=VAULT_IP ansible_user=DOMAIN\USER cpm_zip_file_path=/tmp/pas_packages/cpm.zip pvwa_zip_file_path=/tmp/pas_packages/pvwa.zip psm_zip_file_path=/tmp/pas_packages/psm.zip psmp_zip_file_path=/tmp/pas_packages/psmp.zip  connect_with_rdp=Yes accept_eula=Yes"
 
 Command example for out of Domain , no hardening deployment in drive D:
 
