@@ -4,7 +4,7 @@
 - hosts: localhost
   connection: local
   vars_prompt:
-
+  
     - name: accept_eula
       prompt: "Please accept EULA"
       default: "No"
@@ -42,12 +42,17 @@
       default: "/tmp/pas_packages/psm.zip"
       private: no
 
+    - name: psmp_zip_file_path
+      prompt: "Please enter PSMP installation package location"
+      default: "/tmp/pas_packages/psmp.zip"
+      private: no
+      
   tasks:
 
     - name: Set required parameters from prompt
       include_tasks: set_facts.yml
 
-- hosts: pvwa:cpm:psm
+- hosts: pvwa:cpm:psm:psmp
   strategy: free
 
   tasks:
@@ -58,6 +63,8 @@
       when: "'pvwa' in group_names"
     - include_tasks: psm.yml
       when: "'psm' in group_names"
+    - include_tasks: psmp.yml
+      when: "'psmp' in group_names"
 
 
 # PSM Register Component Requires the First PVWA IP Address

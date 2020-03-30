@@ -1,0 +1,8 @@
+---
+- include_role:
+    name: psmp
+  vars:
+    - psmp_extract: true
+    - psmp_prerequisites: true
+    - psmp_install: true
+    - psmp_postinstall: true

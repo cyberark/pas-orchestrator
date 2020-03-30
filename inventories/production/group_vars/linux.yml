@@ -1,0 +1,9 @@
+---
+# file: group_vars/linux
+ansible_user: "{{ hostvars['localhost']['ansible_user'] }}"
+ansible_password: "{{ hostvars['localhost']['ansible_password'] }}"
+accept_eula: "{{ hostvars['localhost']['accept_eula'] }}"
+vault_ip: "{{ hostvars['localhost']['vault_ip'] }}"
+vault_password: "{{ hostvars['localhost']['vault_password'] }}"
+psmp_zip_file_path: "{{ hostvars['localhost']['psmp_zip_file_path'] }}"
+ansible_become: yes
