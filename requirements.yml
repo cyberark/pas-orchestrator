@@ -3,7 +3,7 @@
 # pvwa git repo
 - src: https://github.com/cyberark/pvwa.git
   scm: git
-  version: v11.3
+  version: fb/pvwa-deploy-secure-password
 
 # cpm git repo
 - src: https://github.com/cyberark/cpm.git
