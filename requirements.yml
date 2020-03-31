@@ -3,7 +3,7 @@
 # pvwa git repo
 - src: https://github.com/cyberark/pvwa.git
   scm: git
-  version: v11.3
+  version: fb/create-no-log
 
 # cpm git repo
 - src: https://github.com/cyberark/cpm.git
