@@ -130,6 +130,14 @@ Prior to running pas-orchestrator hosts file should be "updated" [https://github
     cpm
     psm
 
+## Pulling specific version example :
+
+  ````
+  git clone -b v11.2 -s https://github.com/cyberark/pas-orchestrator.git
+  ````
+  
+  Note : using the -s it saves about 10M of diskspace and doesn’t download the unnecessary stuff.
+
 ## Running the  playbook:
 
  To run the above playbook, execute the following command example :
