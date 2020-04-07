@@ -43,7 +43,7 @@
         name: cf_deploy
       vars:
         - deploy_bucket: cloud-initiatives-pipeline-bucket
-        - cf_template_url: https://raw.githubusercontent.com/cyberark/pas-on-cloud/v11.4/aws/DRVault-Single-Deployment.yaml
+        - cf_template_url: https://raw.githubusercontent.com/cyberark/pas-on-cloud/v11.3.1/aws/DRVault-Single-Deployment.yaml
         - cf_template_parameters:
             EULA: Accept
             KeyName: "{{ keypair }}"
