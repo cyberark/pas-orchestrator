@@ -6,7 +6,7 @@
 
 - name: Set String for CloudFormation Stack ID
   set_fact:
-    cloudformation_stack_id: "ansible-cloudformation-{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}"
+    cloudformation_stack_id: "ACF-{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}"
 
 - name: Create workspace directory on temp folder
   file:
