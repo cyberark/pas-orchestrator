@@ -72,7 +72,7 @@
       ec2_ami_facts:
         owners: 801119661308
         filters:
-          name: "Windows_Server-2016-English-Full-Base-*"
+          name: "Windows_Server-2019-English-Full-Base-*"
       register: ami_find_2016
 
     - name: Create Domain Controller
