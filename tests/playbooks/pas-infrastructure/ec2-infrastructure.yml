@@ -75,6 +75,13 @@
           name: "Windows_Server-2016-English-Full-Base-*"
       register: ami_find_2016
 
+    - name: Get latest windows 2019 ami
+      ec2_ami_facts:
+        owners: 801119661308
+        filters:
+          name: "Windows_Server-2019-English-Full-Base-*"
+      register: ami_find_2019
+
     - name: Create Domain Controller
       include_tasks: create_ec2_batch.yml
       vars:
@@ -100,7 +107,7 @@
       vars:
         - component_name: pvwa
         - count: "{{ pas_count }}"
-        - ami_id: "{{ ami_find_2016.images[0].image_id }}"
+        - ami_id: "{{ ami_find_2019.images[0].image_id }}"
         - security_group: "{{ comp_sg.group_id }}"
 
     - name: Add PVWA Machines to Host Group
@@ -114,7 +121,7 @@
       vars:
         - component_name: cpm
         - count: "{{ pas_count }}"
-        - ami_id: "{{ ami_find_2016.images[0].image_id }}"
+        - ami_id: "{{ ami_find_2019.images[0].image_id }}"
         - security_group: "{{ comp_sg.group_id }}"
 
     - name: Add CPM to Host Group
@@ -128,7 +135,7 @@
       vars:
         - component_name: psm
         - count: "{{ pas_count }}"
-        - ami_id: "{{ ami_find_2016.images[0].image_id }}"
+        - ami_id: "{{ ami_find_2019.images[0].image_id }}"
         - security_group: "{{ comp_sg.group_id }}"
 
     - name: Add PSM to Host Group
