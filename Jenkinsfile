@@ -82,23 +82,23 @@ pipeline {
                 }
               }
             }
-#            stage('Run pas-orchestrator in-domain #0 failure (TC5)') {
-#              steps {
-#                withCredentials([usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
-#                  sh '''
-#                    source .testenv/bin/activate
-#                    VAULT_IP=$(cat /tmp/vault_ip_tc_1.txt)
-#                    cp -r tests/playbooks/pas-infrastructure/outputs/hosts_tc_1.yml inventories/staging/hosts_tc_1.yml
-#                  '''
-#                  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-#                    sh '''
-#                      source .testenv/bin/activate
-#                      ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_tc_1.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP vault_password='blahblah' cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip connect_with_rdp=Yes ansible_user='cyberark.com\\\\$ansible_user' ansible_password=$ansible_password"
-#                    '''
-#                  }
-#                }
-#              }
-#            }
+/*            stage('Run pas-orchestrator in-domain #0 failure (TC5)') {
+              steps {
+                withCredentials([usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
+                  sh '''
+                    source .testenv/bin/activate
+                    VAULT_IP=$(cat /tmp/vault_ip_tc_1.txt)
+                    cp -r tests/playbooks/pas-infrastructure/outputs/hosts_tc_1.yml inventories/staging/hosts_tc_1.yml
+                  '''
+                  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    sh '''
+                      source .testenv/bin/activate
+                      ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_tc_1.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP vault_password='blahblah' cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip connect_with_rdp=Yes ansible_user='cyberark.com\\\\$ansible_user' ansible_password=$ansible_password"
+                    '''
+                  }
+                }
+              }
+            } */
             stage('Run pas-orchestrator in-domain #1') {
               steps {
                 withCredentials([usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
@@ -125,139 +125,139 @@ pipeline {
             }
           }
         }
-#        stage('Deploy Environment for TC2') {
-#          stages {
-#            stage('Deploy Vault') {
-#              steps {
-#                sleep 10
-#                withCredentials([
-#                  usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user'),
-#                  string(credentialsId: 'default_keypair', variable: 'default_keypair'),
-#                  string(credentialsId: 'default_s3_bucket', variable: 'default_s3_bucket')
-#                ]) {
-#                  sh '''
-#                    source .testenv/bin/activate
-#                    ansible-playbook tests/playbooks/deploy_vault.yml -v -e "keypair=$default_keypair bucket=$default_s3_bucket ansible_user=$ansible_user ansible_password=$ansible_password tc_number=2 env_timestamp=$ENV_TIMESTAMP"
-#                  '''
-#                }
-#              }
-#            }
-#            stage('Deploy Vault DR') {
-#              steps {
-#                withCredentials([
-#                  usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user'),
-#                  string(credentialsId: 'default_keypair', variable: 'default_keypair'),
-#                  string(credentialsId: 'default_s3_bucket', variable: 'default_s3_bucket')
-#                ]) {
-#                  sh '''
-#                    VAULT_IP=$(cat /tmp/vault_ip_tc_2.txt)
-#                    source .testenv/bin/activate
-#                    ansible-playbook tests/playbooks/deploy_vaultdr.yml -v -e "keypair=$default_keypair bucket=$default_s3_bucket ansible_user=$ansible_user ansible_password=$ansible_password tc_number=2 vault_ip=$VAULT_IP env_timestamp=$ENV_TIMESTAMP"
-#                  '''
-#                }
-#              }
-#            }
-#            stage('Provision in-domain testing environment') {
-#              steps {
-#                withCredentials([
-#                  usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user'),
-#                  string(credentialsId: 'default_keypair', variable: 'default_keypair')
-#                ]) {
-#                  sh '''
-#                    source .testenv/bin/activate
-#                    ansible-playbook tests/playbooks/pas-infrastructure/ec2-infrastructure.yml -e "aws_region=$AWS_REGION keypair=$default_keypair ec2_instance_type=m4.large public_ip=no pas_count=5 indomain=yes tc_number=2 ansible_user=$ansible_user ansible_password=$ansible_password env_timestamp=$ENV_TIMESTAMP"
-#                  '''
-#                }
-#              }
-#            }
-#            stage('Run pas-orchestrator in-domain #1') {
-#              steps {
-#                withCredentials([usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
-#                  sh '''
-#                    source .testenv/bin/activate
-#                    VAULT_IP=$(cat /tmp/vault_ip_tc_2.txt)
-#                    VAULT_DR_IP=$(cat /tmp/vaultdr_ip_tc_2.txt)
-#                    cp -r tests/playbooks/pas-infrastructure/outputs/hosts_tc_2.yml inventories/staging/hosts_tc_2.yml
-#                    ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_tc_2.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP dr_vault_ip=$VAULT_DR_IP vault_password=$ansible_password cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip pvwa_installation_drive=\'D:\' cpm_installation_drive=\'D:' psm_installation_drive=\'D:\' connect_with_rdp=Yes ansible_user='cyberark.com\\\\$ansible_user' ansible_password=$ansible_password"
-#                  '''
-#                }
-#              }
-#            }
-#            stage('Run pas-orchestrator in-domain #2 (TC4)') {
-#              steps {
-#                withCredentials([usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
-#                  sh '''
-#                    source .testenv/bin/activate
-#                    VAULT_IP=$(cat /tmp/vault_ip_tc_2.txt)
-#                    VAULT_DR_IP=$(cat /tmp/vaultdr_ip_tc_2.txt)
-#                    cp -r tests/playbooks/pas-infrastructure/outputs/hosts_tc_2.yml inventories/staging/hosts_tc_2.yml
-#                    ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_tc_2.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP dr_vault_ip=$VAULT_DR_IP vault_password=$ansible_password cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip pvwa_installation_drive=\'D:\' cpm_installation_drive=\'D:' psm_installation_drive=\'D:\' connect_with_rdp=Yes ansible_user='cyberark.com\\\\$ansible_user' ansible_password=$ansible_password"
-#                  '''
-#                }
-#              }
-#            }
-#          }
-#        }
-#        stage('Deploy Environment for TC3') {
-#          stages {
-#            stage('Deploy Vault') {
-#              steps {
-#                sleep 20
-#                withCredentials([
-#                  usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user'),
-#                  string(credentialsId: 'default_keypair', variable: 'default_keypair'),
-#                  string(credentialsId: 'default_s3_bucket', variable: 'default_s3_bucket')
-#                ]) {
-#                  sh '''
-#                    source .testenv/bin/activate
-#                    ansible-playbook tests/playbooks/deploy_vault.yml -v -e "keypair=$default_keypair bucket=$default_s3_bucket ansible_user=$ansible_user ansible_password=$ansible_password tc_number=3 env_timestamp=$ENV_TIMESTAMP"
-#                  '''
-#                }
-#              }
-#            }
-#            stage('Deploy Vault DR') {
-#              steps {
-#                withCredentials([
-#                  usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user'),
-#                  string(credentialsId: 'default_keypair', variable: 'default_keypair'),
-#                  string(credentialsId: 'default_s3_bucket', variable: 'default_s3_bucket')
-#                ]) {
-#                  sh '''
-#                    VAULT_IP=$(cat /tmp/vault_ip_tc_3.txt)
-#                    source .testenv/bin/activate
-#                    ansible-playbook tests/playbooks/deploy_vaultdr.yml -v -e "keypair=$default_keypair bucket=$default_s3_bucket ansible_user=$ansible_user ansible_password=$ansible_password tc_number=3 vault_ip=$VAULT_IP env_timestamp=$ENV_TIMESTAMP"
-#                  '''
-#                }
-#              }
-#            }
-#            stage('Provision out-of-domain testing environment') {
-#              steps {
-#                withCredentials([
-#                  usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user'),
-#                  string(credentialsId: 'default_keypair', variable: 'default_keypair')
-#                ]) {
-#                  sh '''
-#                    source .testenv/bin/activate
-#                    ansible-playbook tests/playbooks/pas-infrastructure/ec2-infrastructure.yml -e "aws_region=$AWS_REGION keypair=$default_keypair ec2_instance_type=m4.large public_ip=no pas_count=1 indomain=no tc_number=3 ansible_user=$ansible_user ansible_password=$ansible_password env_timestamp=$ENV_TIMESTAMP"
-#                  '''
-#                }
-#              }
-#            }
-#            stage('Run pas-orchestrator out-of-domain') {
-#              steps {
-#                withCredentials([usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
-#                  sh '''
-#                    source .testenv/bin/activate
-#                    VAULT_IP=$(cat /tmp/vault_ip_tc_3.txt)
-#                    VAULT_DR_IP=$(cat /tmp/vaultdr_ip_tc_3.txt)
-#                    cp -r tests/playbooks/pas-infrastructure/outputs/hosts_tc_3.yml inventories/staging/hosts_tc_3.yml
-#                    ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_tc_3.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP dr_vault_ip=$VAULT_DR_IP vault_password=$ansible_password pvwa_hardening=false cpm_hardening=false psm_hardening=false psm_out_of_domain=true cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip connect_with_rdp=Yes ansible_user='$ansible_user' ansible_password=$ansible_password"
-#                  '''
-#                }
-#              }
-#            }
-#          }
-#        }
+/*        stage('Deploy Environment for TC2') {
+          stages {
+            stage('Deploy Vault') {
+              steps {
+                sleep 10
+                withCredentials([
+                  usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user'),
+                  string(credentialsId: 'default_keypair', variable: 'default_keypair'),
+                  string(credentialsId: 'default_s3_bucket', variable: 'default_s3_bucket')
+                ]) {
+                  sh '''
+                    source .testenv/bin/activate
+                    ansible-playbook tests/playbooks/deploy_vault.yml -v -e "keypair=$default_keypair bucket=$default_s3_bucket ansible_user=$ansible_user ansible_password=$ansible_password tc_number=2 env_timestamp=$ENV_TIMESTAMP"
+                  '''
+                }
+              }
+            }
+            stage('Deploy Vault DR') {
+              steps {
+                withCredentials([
+                  usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user'),
+                  string(credentialsId: 'default_keypair', variable: 'default_keypair'),
+                  string(credentialsId: 'default_s3_bucket', variable: 'default_s3_bucket')
+                ]) {
+                  sh '''
+                    VAULT_IP=$(cat /tmp/vault_ip_tc_2.txt)
+                    source .testenv/bin/activate
+                    ansible-playbook tests/playbooks/deploy_vaultdr.yml -v -e "keypair=$default_keypair bucket=$default_s3_bucket ansible_user=$ansible_user ansible_password=$ansible_password tc_number=2 vault_ip=$VAULT_IP env_timestamp=$ENV_TIMESTAMP"
+                  '''
+                }
+              }
+            }
+            stage('Provision in-domain testing environment') {
+              steps {
+                withCredentials([
+                  usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user'),
+                  string(credentialsId: 'default_keypair', variable: 'default_keypair')
+                ]) {
+                  sh '''
+                    source .testenv/bin/activate
+                    ansible-playbook tests/playbooks/pas-infrastructure/ec2-infrastructure.yml -e "aws_region=$AWS_REGION keypair=$default_keypair ec2_instance_type=m4.large public_ip=no pas_count=5 indomain=yes tc_number=2 ansible_user=$ansible_user ansible_password=$ansible_password env_timestamp=$ENV_TIMESTAMP"
+                  '''
+                }
+              }
+            }
+            stage('Run pas-orchestrator in-domain #1') {
+              steps {
+                withCredentials([usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
+                  sh '''
+                    source .testenv/bin/activate
+                    VAULT_IP=$(cat /tmp/vault_ip_tc_2.txt)
+                    VAULT_DR_IP=$(cat /tmp/vaultdr_ip_tc_2.txt)
+                    cp -r tests/playbooks/pas-infrastructure/outputs/hosts_tc_2.yml inventories/staging/hosts_tc_2.yml
+                    ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_tc_2.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP dr_vault_ip=$VAULT_DR_IP vault_password=$ansible_password cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip pvwa_installation_drive=\'D:\' cpm_installation_drive=\'D:' psm_installation_drive=\'D:\' connect_with_rdp=Yes ansible_user='cyberark.com\\\\$ansible_user' ansible_password=$ansible_password"
+                  '''
+                }
+              }
+            }
+            stage('Run pas-orchestrator in-domain #2 (TC4)') {
+              steps {
+                withCredentials([usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
+                  sh '''
+                    source .testenv/bin/activate
+                    VAULT_IP=$(cat /tmp/vault_ip_tc_2.txt)
+                    VAULT_DR_IP=$(cat /tmp/vaultdr_ip_tc_2.txt)
+                    cp -r tests/playbooks/pas-infrastructure/outputs/hosts_tc_2.yml inventories/staging/hosts_tc_2.yml
+                    ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_tc_2.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP dr_vault_ip=$VAULT_DR_IP vault_password=$ansible_password cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip pvwa_installation_drive=\'D:\' cpm_installation_drive=\'D:' psm_installation_drive=\'D:\' connect_with_rdp=Yes ansible_user='cyberark.com\\\\$ansible_user' ansible_password=$ansible_password"
+                  '''
+                }
+              }
+            }
+          }
+        }
+        stage('Deploy Environment for TC3') {
+          stages {
+            stage('Deploy Vault') {
+              steps {
+                sleep 20
+                withCredentials([
+                  usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user'),
+                  string(credentialsId: 'default_keypair', variable: 'default_keypair'),
+                  string(credentialsId: 'default_s3_bucket', variable: 'default_s3_bucket')
+                ]) {
+                  sh '''
+                    source .testenv/bin/activate
+                    ansible-playbook tests/playbooks/deploy_vault.yml -v -e "keypair=$default_keypair bucket=$default_s3_bucket ansible_user=$ansible_user ansible_password=$ansible_password tc_number=3 env_timestamp=$ENV_TIMESTAMP"
+                  '''
+                }
+              }
+            }
+            stage('Deploy Vault DR') {
+              steps {
+                withCredentials([
+                  usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user'),
+                  string(credentialsId: 'default_keypair', variable: 'default_keypair'),
+                  string(credentialsId: 'default_s3_bucket', variable: 'default_s3_bucket')
+                ]) {
+                  sh '''
+                    VAULT_IP=$(cat /tmp/vault_ip_tc_3.txt)
+                    source .testenv/bin/activate
+                    ansible-playbook tests/playbooks/deploy_vaultdr.yml -v -e "keypair=$default_keypair bucket=$default_s3_bucket ansible_user=$ansible_user ansible_password=$ansible_password tc_number=3 vault_ip=$VAULT_IP env_timestamp=$ENV_TIMESTAMP"
+                  '''
+                }
+              }
+            }
+            stage('Provision out-of-domain testing environment') {
+              steps {
+                withCredentials([
+                  usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user'),
+                  string(credentialsId: 'default_keypair', variable: 'default_keypair')
+                ]) {
+                  sh '''
+                    source .testenv/bin/activate
+                    ansible-playbook tests/playbooks/pas-infrastructure/ec2-infrastructure.yml -e "aws_region=$AWS_REGION keypair=$default_keypair ec2_instance_type=m4.large public_ip=no pas_count=1 indomain=no tc_number=3 ansible_user=$ansible_user ansible_password=$ansible_password env_timestamp=$ENV_TIMESTAMP"
+                  '''
+                }
+              }
+            }
+            stage('Run pas-orchestrator out-of-domain') {
+              steps {
+                withCredentials([usernamePassword(credentialsId: 'default_vault_credentials', passwordVariable: 'ansible_password', usernameVariable: 'ansible_user')]) {
+                  sh '''
+                    source .testenv/bin/activate
+                    VAULT_IP=$(cat /tmp/vault_ip_tc_3.txt)
+                    VAULT_DR_IP=$(cat /tmp/vaultdr_ip_tc_3.txt)
+                    cp -r tests/playbooks/pas-infrastructure/outputs/hosts_tc_3.yml inventories/staging/hosts_tc_3.yml
+                    ansible-playbook pas-orchestrator.yml -i inventories/staging/hosts_tc_3.yml -v -e "accept_eula=yes vault_ip=$VAULT_IP dr_vault_ip=$VAULT_DR_IP vault_password=$ansible_password pvwa_hardening=false cpm_hardening=false psm_hardening=false psm_out_of_domain=true cpm_zip_file_path=/tmp/packages/cpm.zip psm_zip_file_path=/tmp/packages/psm.zip pvwa_zip_file_path=/tmp/packages/pvwa.zip connect_with_rdp=Yes ansible_user='$ansible_user' ansible_password=$ansible_password"
+                  '''
+                }
+              }
+            }
+          }
+        } */
       }
     }
   }
@@ -280,21 +280,21 @@ pipeline {
         aws ec2 terminate-instances --region $AWS_REGION --instance-ids $instance_ids
         aws ec2 wait instance-terminated --region $AWS_REGION --instance-ids $instance_ids
 
-#        instance_ids=$(aws ec2 describe-instances --region $AWS_REGION --query 'Reservations[].Instances[].InstanceId' --filters "Name=tag:aws:cloudformation:stack-name,Values=$(cat /tmp/cf_vault_tc_2.txt)" --output text)
-#        aws ec2 terminate-instances --region $AWS_REGION --instance-ids $instance_ids
-#        aws ec2 wait instance-terminated --region $AWS_REGION --instance-ids $instance_ids
-#
-#        instance_ids=$(aws ec2 describe-instances --region $AWS_REGION --query 'Reservations[].Instances[].InstanceId' --filters "Name=tag:aws:cloudformation:stack-name,Values=$(cat /tmp/cf_vaultdr_tc_2.txt)" --output text)
-#        aws ec2 terminate-instances --region $AWS_REGION --instance-ids $instance_ids
-#        aws ec2 wait instance-terminated --region $AWS_REGION --instance-ids $instance_ids
-#
-#        instance_ids=$(aws ec2 describe-instances --region $AWS_REGION --query 'Reservations[].Instances[].InstanceId' --filters "Name=tag:aws:cloudformation:stack-name,Values=$(cat /tmp/cf_vault_tc_3.txt)" --output text)
-#        aws ec2 terminate-instances --region $AWS_REGION --instance-ids $instance_ids
-#        aws ec2 wait instance-terminated --region $AWS_REGION --instance-ids $instance_ids
-#
-#        instance_ids=$(aws ec2 describe-instances --region $AWS_REGION --query 'Reservations[].Instances[].InstanceId' --filters "Name=tag:aws:cloudformation:stack-name,Values=$(cat /tmp/cf_vaultdr_tc_3.txt)" --output text)
-#        aws ec2 terminate-instances --region $AWS_REGION --instance-ids $instance_ids
-#        aws ec2 wait instance-terminated --region $AWS_REGION --instance-ids $instance_ids
+/*        instance_ids=$(aws ec2 describe-instances --region $AWS_REGION --query 'Reservations[].Instances[].InstanceId' --filters "Name=tag:aws:cloudformation:stack-name,Values=$(cat /tmp/cf_vault_tc_2.txt)" --output text)
+        aws ec2 terminate-instances --region $AWS_REGION --instance-ids $instance_ids
+        aws ec2 wait instance-terminated --region $AWS_REGION --instance-ids $instance_ids
+
+        instance_ids=$(aws ec2 describe-instances --region $AWS_REGION --query 'Reservations[].Instances[].InstanceId' --filters "Name=tag:aws:cloudformation:stack-name,Values=$(cat /tmp/cf_vaultdr_tc_2.txt)" --output text)
+        aws ec2 terminate-instances --region $AWS_REGION --instance-ids $instance_ids
+        aws ec2 wait instance-terminated --region $AWS_REGION --instance-ids $instance_ids
+
+        instance_ids=$(aws ec2 describe-instances --region $AWS_REGION --query 'Reservations[].Instances[].InstanceId' --filters "Name=tag:aws:cloudformation:stack-name,Values=$(cat /tmp/cf_vault_tc_3.txt)" --output text)
+        aws ec2 terminate-instances --region $AWS_REGION --instance-ids $instance_ids
+        aws ec2 wait instance-terminated --region $AWS_REGION --instance-ids $instance_ids
+
+        instance_ids=$(aws ec2 describe-instances --region $AWS_REGION --query 'Reservations[].Instances[].InstanceId' --filters "Name=tag:aws:cloudformation:stack-name,Values=$(cat /tmp/cf_vaultdr_tc_3.txt)" --output text)
+        aws ec2 terminate-instances --region $AWS_REGION --instance-ids $instance_ids
+        aws ec2 wait instance-terminated --region $AWS_REGION --instance-ids $instance_ids */
 
         # Delete security groups
         sleep 60
@@ -302,10 +302,10 @@ pipeline {
 
         # Delete Vault Cloudformations
         aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_tc_1.txt)
-#        aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vaultdr_tc_2.txt)
-#        aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_tc_2.txt)
-#        aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vaultdr_tc_3.txt)
-#        aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_tc_3.txt)
+/*        aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vaultdr_tc_2.txt)
+        aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_tc_2.txt)
+        aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vaultdr_tc_3.txt)
+        aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_tc_3.txt) */
       '''
     }
   }
