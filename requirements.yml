@@ -8,7 +8,7 @@
 # cpm git repo
 - src: https://github.com/cyberark/cpm.git
   scm: git
-  version: v11.4
+  version: feature-cpm-user
 
 # psm git repo
 - src: https://github.com/cyberark/psm.git
