@@ -70,7 +70,7 @@ These are the variables used in this playbook
 | cpm_zip_file_path                | yes          | None                                                                           | Path to zipped CPM image                 |
 | pvwa_zip_file_path               | yes          | None                                                                           | Path to zipped PVWA image                |
 | psm_zip_file_path                | yes          | None                                                                           | Path to zipped PSM image                 |
-| cpm_username                     | no           | "PasswordManager"                                                              | Path to zipped PSM image                 |
+| cpm_username                     | no           | "PasswordManager"                                                              | Vault Component's username               |
 
 Variables related to the components can be found on the Components README
 
