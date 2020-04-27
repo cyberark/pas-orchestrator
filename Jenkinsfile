@@ -125,7 +125,7 @@ pipeline {
             }
           }
         }
-/*        stage('Deploy Environment for TC2') {
+        stage('Deploy Environment for TC2') {
           stages {
             stage('Deploy Vault') {
               steps {
@@ -257,7 +257,7 @@ pipeline {
               }
             }
           }
-        } */
+        }
       }
     }
   }
@@ -280,7 +280,7 @@ pipeline {
         aws ec2 terminate-instances --region $AWS_REGION --instance-ids $instance_ids
         aws ec2 wait instance-terminated --region $AWS_REGION --instance-ids $instance_ids
 
-/*        instance_ids=$(aws ec2 describe-instances --region $AWS_REGION --query 'Reservations[].Instances[].InstanceId' --filters "Name=tag:aws:cloudformation:stack-name,Values=$(cat /tmp/cf_vault_tc_2.txt)" --output text)
+        instance_ids=$(aws ec2 describe-instances --region $AWS_REGION --query 'Reservations[].Instances[].InstanceId' --filters "Name=tag:aws:cloudformation:stack-name,Values=$(cat /tmp/cf_vault_tc_2.txt)" --output text)
         aws ec2 terminate-instances --region $AWS_REGION --instance-ids $instance_ids
         aws ec2 wait instance-terminated --region $AWS_REGION --instance-ids $instance_ids
 
@@ -294,7 +294,7 @@ pipeline {
 
         instance_ids=$(aws ec2 describe-instances --region $AWS_REGION --query 'Reservations[].Instances[].InstanceId' --filters "Name=tag:aws:cloudformation:stack-name,Values=$(cat /tmp/cf_vaultdr_tc_3.txt)" --output text)
         aws ec2 terminate-instances --region $AWS_REGION --instance-ids $instance_ids
-        aws ec2 wait instance-terminated --region $AWS_REGION --instance-ids $instance_ids */
+        aws ec2 wait instance-terminated --region $AWS_REGION --instance-ids $instance_ids
 
         # Delete security groups
         sleep 60
@@ -302,10 +302,10 @@ pipeline {
 
         # Delete Vault Cloudformations
         aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_tc_1.txt)
-/*        aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vaultdr_tc_2.txt)
+        aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vaultdr_tc_2.txt)
         aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_tc_2.txt)
         aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vaultdr_tc_3.txt)
-        aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_tc_3.txt) */
+        aws cloudformation delete-stack --region $AWS_REGION --stack-name $(cat /tmp/cf_vault_tc_3.txt)
       '''
     }
   }
