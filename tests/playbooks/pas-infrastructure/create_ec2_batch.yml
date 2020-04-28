@@ -18,9 +18,11 @@
       - device_name: /dev/sda1
         volume_type: gp2
         volume_size: 30
+        delete_on_termination: yes
       - device_name: /dev/sda2
         volume_type: gp2
         volume_size: 30
+        delete_on_termination: yes
     instance_tags:
       Name: "{{ component_name }}-Machine-{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}"
       Type: "{{ component_name }}"
