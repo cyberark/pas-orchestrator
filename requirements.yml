@@ -18,4 +18,4 @@
 # psmp git repo
 - src: https://github.com/dviryamin/psmp.git
   scm: git
-  version: v11.3
+  version: v11.4
