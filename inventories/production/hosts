@@ -26,10 +26,13 @@
 # Add here list of hosts or ip adresses of psmp dedicated machines
 # psmp01.example.com
 # psmp02.example.com
-
+10.2.0.144
 
 # DO NOT EDIT BELOW!!!
 [windows:children]
 pvwa
 cpm
 psm
+
+[linux:children]
+psmp

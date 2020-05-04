@@ -14,3 +14,8 @@
 - src: https://github.com/cyberark/psm.git
   scm: git
   version: v11.4
+
+# psmp git repo
+- src: https://github.com/dviryamin/psmp.git
+  scm: git
+  version: v11.4
