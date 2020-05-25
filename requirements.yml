@@ -8,7 +8,7 @@
 # cpm git repo
 - src: https://github.com/cyberark/cpm.git
   scm: git
-  version: develop
+  version: Fix-typo
 
 # psm git repo
 - src: https://github.com/cyberark/psm.git
