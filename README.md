@@ -156,7 +156,9 @@ In case of a failure, a Log folder with be created on the Ansible workstation wi
 The logs are available under  - pas-orchestrator/tasks/logs
 
 ## Idempotence
-Every stage in the roles contains validation and can be run multiple times without error.
+Every stage in the roles contains validation and can be run multiple times without error in case of success or any ansible related error.This does not apply to a component installation error for which in some cases a second execution will not assist in recovery and
+There might be left over artifacts (i.e. app users in the vault)
+
 
 ## Limitations
 - Only single component per server is supported
