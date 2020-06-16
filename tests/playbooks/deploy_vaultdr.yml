@@ -43,22 +43,16 @@
         name: cf_deploy
       vars:
         - deploy_bucket: cloud-initiatives-pipeline-bucket
-        - cf_template_url: https://raw.githubusercontent.com/cyberark/pas-on-cloud/v11.3.1/aws/DRVault-Single-Deployment.yaml
+        - cf_template_url: https://raw.githubusercontent.com/cyberark/pas-on-cloud/dv_cross_cloud/aws/DRVault-Single-Deployment.yaml
         - cf_template_parameters:
             EULA: Accept
             KeyName: "{{ keypair }}"
-            VaultFilesBucket: "{{ bucket }}"
-            LicenseFile: license.xml
-            RecoveryPublicKey: recpub.key
             VaultPrivateIP: "{{ vault_ip }}"
-            VaultAdminPassword: "{{ ansible_password }}"
             VaultDRPassword: "{{ ansible_password }}"
-            RetypeDRPassword: "{{ ansible_password }}"
-            VaultMasterPassword: "{{ ansible_password }}"
-            RetypeMasterPassword: "{{ ansible_password }}"
+            Secret: "{{ ansible_password }}"
             VaultInstanceName: "[PAS-Orchestrator] DRVault"
-            VaultHostName: vault
-            VaultInstanceType: m4.large
+            VaultInstanceType: m5.large
+            VaultHostName: vaultdr
             VaultInstanceSecurityGroups: "{{ my_sg.group_id }}"
             DRInstanceSubnetId: "{{ my_subnet.stdout }}"
         - aws_region: "{{ my_region.stdout }}"

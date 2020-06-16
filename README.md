@@ -70,6 +70,7 @@ These are the variables used in this playbook
 | cpm_zip_file_path                | yes          | None                                                                           | Path to zipped CPM image                 |
 | pvwa_zip_file_path               | yes          | None                                                                           | Path to zipped PVWA image                |
 | psm_zip_file_path                | yes          | None                                                                           | Path to zipped PSM image                 |
+| cpm_username                     | no           | "PasswordManager"                                                              | Vault Component's username               |
 
 Variables related to the components can be found on the Components README
 
@@ -109,7 +110,8 @@ Prior to running pas-orchestrator hosts file should be "updated" [https://github
     # cpm01.example.com
     # cpm02.example.com
     10.2.0.155
-
+    # Add cpm with custom component user name (default is PasswordManager)
+    10.2.0.156 cpm_username=LinuxManager
 
     [psm]
     # Add here list of hosts or ip adresses of psm dedicated machines
@@ -144,9 +146,9 @@ Prior to running pas-orchestrator hosts file should be "updated" [https://github
 
     ansible-playbook -i ./inventories/production pas-orchestrator.yml -e "vault_ip=VAULT_IP ansible_user=DOMAIN\USER cpm_zip_file_path=/tmp/pas_packages/cpm.zip pvwa_zip_file_path=/tmp/pas_packages/pvwa.zip psm_zip_file_path=/tmp/pas_packages/psm.zip  connect_with_rdp=Yes accept_eula=Yes"
 
-Command example for out of Domain , no hardening deployment in drive D:
+Command example for out of Domain , no hardening deployment in drive D with custom component username for cpm:
 
-    ansible-playbook -i ./inventories/production pas-orchestrator.yml -e "vault_ip=VAULT_IP ansible_user=DOMAIN\USER cpm_zip_file_path=/tmp/pas_packages/cpm.zip pvwa_zip_file_path=/tmp/pas_packages/pvwa.zip psm_zip_file_path=/tmp/pas_packages/psm.zip {psm_out_of_domain:true} connect_with_rdp=Yes accept_eula=Yes psm_installation_drive=D: cpm_installation_drive=D: pvwa_installation_drive=D: {psm_hardening:false} {cpm_hardening:false} {pvwa_hardening:false}"
+    ansible-playbook -i ./inventories/production pas-orchestrator.yml -e "vault_ip=VAULT_IP ansible_user=DOMAIN\USER cpm_zip_file_path=/tmp/pas_packages/cpm.zip pvwa_zip_file_path=/tmp/pas_packages/pvwa.zip psm_zip_file_path=/tmp/pas_packages/psm.zip {psm_out_of_domain:true} connect_with_rdp=Yes accept_eula=Yes psm_installation_drive=D: cpm_installation_drive=D: pvwa_installation_drive=D: {psm_hardening:false} {cpm_hardening:false} {pvwa_hardening:false} cpm_username=WinManager"
 
  ** *Vault and remote host passwords are entered via Prompt*
 
@@ -156,7 +158,7 @@ In case of a failure, a Log folder with be created on the Ansible workstation wi
 The logs are available under  - pas-orchestrator/tasks/logs
 
 ## Idempotence
-Every stage in the roles contains validation and can be run multiple times without error.
+Every stage in the roles contains validation and can be run multiple times without error in case of success or any ansible related error.This does not apply to a component installation error for which in some cases a second execution will not assist in recovery and There might be left over artifacts (i.e. app users in the vault)
 
 ## Limitations
 - Only single component per server is supported
