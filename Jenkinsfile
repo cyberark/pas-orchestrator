@@ -8,6 +8,7 @@ pipeline {
     AWS_REGION = sh(script: 'curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | python3 -c "import json,sys;obj=json.load(sys.stdin);print (obj[\'region\'])"', returnStdout: true).trim()
     // shortCommit = sh(script: "git log -n 1 --pretty=format:'%h'", returnStdout: true).trim()
     CYBERARK_VERSION = "v11.5"
+    PSM_VERSION = "v11.4" // DELETE next release
     ENV_TIMESTAMP = sh(script: "date +%s", returnStdout: true).trim()
   }
   stages {
@@ -44,7 +45,7 @@ pipeline {
           string(credentialsId: 'default_packages_bucket', variable: 'default_packages_bucket')
         ]) {
           dir ('/tmp/packages') {
-            s3Download(file:'/tmp/packages/psm.zip', bucket:"$default_packages_bucket", path:"Packages/${env.CYBERARK_VERSION}/Privileged Session Manager-Rls-${env.CYBERARK_VERSION}.zip", pathStyleAccessEnabled: true, force:true)
+            s3Download(file:'/tmp/packages/psm.zip', bucket:"$default_packages_bucket", path:"Packages/${env.PSM_VERSION}/Privileged Session Manager-Rls-${env.PSM_VERSION}.zip", pathStyleAccessEnabled: true, force:true)
             s3Download(file:'/tmp/packages/cpm.zip', bucket:"$default_packages_bucket", path:"Packages/${env.CYBERARK_VERSION}/Central Policy Manager-Rls-${env.CYBERARK_VERSION}.zip", pathStyleAccessEnabled: true, force:true)
             s3Download(file:'/tmp/packages/pvwa.zip', bucket:"$default_packages_bucket", path:"Packages/${env.CYBERARK_VERSION}/Password Vault Web Access-Rls-${env.CYBERARK_VERSION}.zip", pathStyleAccessEnabled: true, force:true)
           }
