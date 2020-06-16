@@ -43,7 +43,7 @@
         name: cf_deploy
       vars:
         - deploy_bucket: cloud-initiatives-pipeline-bucket
-        - cf_template_url: https://raw.githubusercontent.com/cyberark/pas-on-cloud/v11.3.1/aws/Vault-Single-Deployment.yaml
+        - cf_template_url: https://raw.githubusercontent.com/cyberark/pas-on-cloud/dv_cross_cloud/aws/Vault-Single-Deployment.yaml
         - cf_template_parameters:
             EULA: Accept
             KeyName: "{{ keypair }}"
@@ -54,9 +54,13 @@
             RetypeAdminPassword: "{{ ansible_password }}"
             VaultMasterPassword: "{{ ansible_password }}"
             RetypeMasterPassword: "{{ ansible_password }}"
+            DRVaultPassword: "{{ ansible_password }}"
+            RetypeDRVaultPassword: "{{ ansible_password }}"
+            Secret: "{{ ansible_password }}"
+            SecretRetype: "{{ ansible_password }}"
             VaultInstanceName: "[PAS-Orchestrator] Vault"
+            VaultInstanceType: m5.large
             VaultHostName: vault
-            VaultInstanceType: m4.large
             VaultInstanceSecurityGroups: "{{ my_sg.group_id }}"
             VaultInstanceSubnetId: "{{ my_subnet.stdout }}"
         - aws_region: "{{ my_region.stdout }}"
