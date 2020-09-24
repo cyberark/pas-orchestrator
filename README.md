@@ -135,7 +135,7 @@ Prior to running pas-orchestrator hosts file should be "updated" [https://github
 ## Pulling specific version example :
 
   ````
-  git clone -b v11.6 -s https://github.com/cyberark/pas-orchestrator.git
+  git clone -b v11.7 -s https://github.com/cyberark/pas-orchestrator.git
   ````
   
   Note : using the -s it saves about 10M of diskspace and doesn’t download the unnecessary stuff.
