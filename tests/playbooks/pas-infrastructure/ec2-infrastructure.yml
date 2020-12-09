@@ -192,6 +192,27 @@
       wait_for_connection:
         timeout: 600
 
+    - name: Get roles directory dirname
+      set_fact:
+        dotnet_installer_path: "C:\\ndp48-x86-x64-allos-enu.exe"
+
+    - name: Download .NET Framework 4.8
+      win_get_url:
+        url: https://download.visualstudio.microsoft.com/download/pr/014120d7-d689-4305-befd-3cb711108212/0fd66638cde16859462a6243a4629a50/ndp48-x86-x64-allos-enu.exe
+        dest: "{{ dotnet_installer_path }}"
+
+    - name: Install Microsoft .NET Framework 4.8
+      win_package:
+        path: "{{ dotnet_installer_path }}"
+        product_id: '{50e73eb2-10f7-4457-954a-6b06fccc7d04}'
+        arguments: /q /norestart
+      register: dotnet_install
+
+    - name: Delete .NET Framework Installer
+      win_file:
+        path: "{{ dotnet_installer_path }}"
+        state: absent
+
     - name: Copy diskpart script
       win_copy:
         src: files/diskpart.txt
@@ -231,8 +252,6 @@
     - name: Reboot PAS Machines to Apply Changes
       win_reboot:
           reboot_timeout: 300
-      when: domain_state.reboot_required
-      when: indomain == "yes"
 
 - hosts: localhost
   gather_facts: no
