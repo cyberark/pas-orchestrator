@@ -13,4 +13,4 @@
 # psm git repo
 - src: https://github.com/cyberark/psm.git
   scm: git
-  version: v12.1
+  version: v12.0
