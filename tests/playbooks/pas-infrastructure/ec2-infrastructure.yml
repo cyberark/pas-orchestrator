@@ -10,9 +10,10 @@
       $admin.PSBase.Invoke("SetPassword", "{{ ansible_password }}")
 
       # Configure machine for ansible remoting
-      $url = "https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1"
+      [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtoc
+      $url = "https://raw.githubusercontent.com/ansible/ansible/devel/e
       $file = "$env:temp\ConfigureRemotingForAnsible.ps1"
-      (New-Object -TypeName System.Net.WebClient).DownloadFile($url, $file)
+      Invoke-WebRequest -Uri $url -OutFile $file
       powershell.exe -ExecutionPolicy ByPass -File $file -EnableCredSSP
       </powershell>
 
