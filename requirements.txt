@@ -17,7 +17,7 @@ pycparser==2.19
 pyOpenSSL==19.1.0
 python-dateutil==2.8.1
 pywinrm==0.4.1
-PyYAML==5.3
+PyYAML==5.4
 requests==2.23.0
 requests-credssp==1.1.1
 requests-ntlm==1.1.0
