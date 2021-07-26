@@ -19,7 +19,7 @@ pyaml==20.3.1
 pyasn1==0.4.8
 pycparser==2.20
 python-dateutil==2.8.1
-PyYAML==5.3.1
+PyYAML==5.4
 rsa==3.4.2
 ruamel.yaml==0.16.10
 ruamel.yaml.clib==0.2.0
