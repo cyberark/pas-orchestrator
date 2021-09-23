@@ -1,4 +1,4 @@
-ansible==2.9.6
+ansible==4.2.0
 ansible-lint==4.2.0
 argcomplete==1.11.1
 awscli==1.18.32
