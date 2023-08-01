@@ -5,7 +5,7 @@ botocore==1.15.8
 certifi==2019.11.28
 cffi==1.14.0
 chardet==3.0.4
-cryptography==2.8
+cryptography==41.0.3
 docutils==0.15.2
 idna==2.9
 Jinja2==2.11.1
